@@ -75,38 +75,43 @@
     </div>
 </div>
 <%-- END HEADER --%>
-<div style="width: 65%; margin: 0 auto; padding: 50px 0;"> <%-- START CONTENT --%>
-    <form method="post" action="<c:out value="${context}"/>/add-expense">
-        <fieldset enable>
-            <legend>Add expense</legend>
-            <div class="mb-3">
-                <label for="date" class="form-label">Date</label>
-                <input type="date" id="date" class="form-control" name="date"
-                       value="<c:out value="${requestScope.expense.date}"/>">
-            </div>
-            <div class="mb-3">
-                <label for="amount" class="form-label">Amount</label>
-                <input type="number" step="0.01" id="amount" class="form-control" placeholder="100.00" name="amount"
-                       value="<c:out value="${requestScope.expense.amount}"/>">
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <input type="text" id="description" class="form-control" placeholder="Expense description"
-                       name="description" value="<c:out value="${requestScope.expense.description}"/>">
-            </div>
-            <div class="mb-3">
-                <label for="categoryId" class="form-label">Category</label>
-                <select id="categoryId" class="form-select" name="categoryId">
-                    <c:forEach var="category" items="${requestScope.categoriesList}">
-                        <option value="${category.id}">${category.name}</option>
-                    </c:forEach>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </fieldset>
+<div style="width: 65%; margin: 0 auto; padding: 50px 0; display: flex; flex-direction: column; align-items: flex-end;"> <%-- START CONTENT --%>
+    <form method="post" action="<c:out value="${context}"/>/add-expense" style="width: 100%">
+        <legend>Add expense</legend>
+        <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" id="date" class="form-control" name="date"
+                   value="<c:out value="${requestScope.expense.date}"/>">
+        </div>
+        <div class="mb-3">
+            <label for="amount" class="form-label">Amount</label>
+            <input type="number" step="0.01" id="amount" class="form-control" placeholder="100.00" name="amount"
+                   value="<c:out value="${requestScope.expense.amount}"/>">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" id="description" class="form-control" placeholder="Expense description"
+                   name="description" value="<c:out value="${requestScope.expense.description}"/>">
+        </div>
+        <div class="mb-3">
+            <label for="categoryId" class="form-label">Category</label>
+            <select id="categoryId" class="form-select" name="categoryId">
+                <c:forEach var="category" items="${requestScope.categoriesList}">
+                    <option value="${category.id}">${category.name}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary"
+                style="width: 400px; height: 50px; background-color: #486976; border: none">
+            Submit
+        </button>
     </form>
     <a href="<c:out value="${context}"/>/add-category">
-        <button type="add" class="btn btn-info">Add new category</button>
+        <button type="add" class="btn btn-info"
+                style="width: 300px; height: 50px; background-color: #D1FBED; border: none">
+            Add new
+            category
+        </button>
     </a>
 </div>
 <%-- END CONTENT --%>
