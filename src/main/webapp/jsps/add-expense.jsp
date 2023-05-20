@@ -22,25 +22,34 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"
             integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <body>
-<div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        History
-    </button>
-    <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="manage-incomes">Incomes</a></li>
-        <li><a class="dropdown-item" href="manage-expenses">Expenses</a></li>
-    </ul>
-</div>
-<div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Add
-    </button>
-    <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="add-income">Incomes</a></li>
-        <li><a class="dropdown-item" href="add-expense">Expenses</a></li>
-    </ul>
+<div style="display: flex; padding: 20px 0px 20px 50px;">
+    <a href="<c:out value="${context}"/>/">
+        <button class="btn btn-dark btn-lg" style="font-size: 25px"><i type="button" class="fa fa-home"></i></button>
+    </a>
+    <div class="dropdown" style="padding-left:10px; padding-right: 10px">
+        <button class="btn btn-dark dropdown-toggle btn-lg" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+            History
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="manage-incomes">Incomes</a></li>
+            <li><a class="dropdown-item" href="manage-expenses">Expenses</a></li>
+        </ul>
+    </div>
+    <div class="dropdown">
+        <button class="btn btn-dark dropdown-toggle btn-lg" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+            Add
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="add-income">Incomes</a></li>
+            <li><a class="dropdown-item" href="add-expense">Expenses</a></li>
+        </ul>
+    </div>
 </div>
 <form method="post" action="<c:out value="${context}"/>/add-expense">
     <fieldset enable>
