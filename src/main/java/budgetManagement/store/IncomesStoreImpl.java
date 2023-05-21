@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class IncomesStoreImpl implements IncomesStore{
+public class IncomesStoreImpl implements IncomesStore {
     private Connection dbConnection;
 
     public IncomesStoreImpl(Connection dbConnection) {
@@ -19,11 +19,11 @@ public class IncomesStoreImpl implements IncomesStore{
     public void addIncome(Income income) throws SQLException {
         String insertStatement = "INSERT INTO incomes VALUES (?, ?, ?, ?)";
         PreparedStatement createIncomeStatement = dbConnection.prepareStatement(insertStatement);
-            createIncomeStatement.setObject(1, income.getId());
-            createIncomeStatement.setObject(2, income.getDate());
-            createIncomeStatement.setDouble(3, income.getAmount());
-            createIncomeStatement.setString(4, income.getSource());
-            createIncomeStatement.executeUpdate();
+        createIncomeStatement.setObject(1, income.getId());
+        createIncomeStatement.setObject(2, income.getDate());
+        createIncomeStatement.setDouble(3, income.getAmount());
+        createIncomeStatement.setString(4, income.getSource());
+        createIncomeStatement.executeUpdate();
     }
 
     @Override
@@ -51,18 +51,33 @@ public class IncomesStoreImpl implements IncomesStore{
     @Override
     public void updateIncome(UUID id, Income income) throws SQLException {
         String updateStatement = "UPDATE incomes SET date = ?, amount = ?, source = ? WHERE id = ?";
-            PreparedStatement updateIncomeStatement = dbConnection.prepareStatement(updateStatement);
-            updateIncomeStatement.setObject(1, income.getDate());
-            updateIncomeStatement.setDouble(2, income.getAmount());
-            updateIncomeStatement.setString(3, income.getSource());
-            updateIncomeStatement.setObject(4, id);
-            updateIncomeStatement.executeUpdate();
+        PreparedStatement updateIncomeStatement = dbConnection.prepareStatement(updateStatement);
+        updateIncomeStatement.setObject(1, income.getDate());
+        updateIncomeStatement.setDouble(2, income.getAmount());
+        updateIncomeStatement.setString(3, income.getSource());
+        updateIncomeStatement.setObject(4, id);
+        updateIncomeStatement.executeUpdate();
     }
 
     @Override
     public void deleteIncome(UUID id) throws SQLException {
-            PreparedStatement deleteIncomeStatement = dbConnection.prepareStatement("DELETE FROM incomes WHERE id = ?");
-            deleteIncomeStatement.setObject(1, id);
-            deleteIncomeStatement.executeUpdate();
+        PreparedStatement deleteIncomeStatement = dbConnection.prepareStatement("DELETE FROM incomes WHERE id = ?");
+        deleteIncomeStatement.setObject(1, id);
+        deleteIncomeStatement.executeUpdate();
+    }
+
+    @Override
+    public Income findIncomeById(UUID id) throws SQLException {
+        PreparedStatement findIncomeByIdStatement = dbConnection.prepareStatement("SELECT * FROM incomes WHERE id = ?");
+        findIncomeByIdStatement.setObject(1, id);
+        ResultSet incomeResultSet = findIncomeByIdStatement.executeQuery();
+        incomeResultSet.next();
+        UUID incomeId = (UUID) incomeResultSet.getObject("id");
+        LocalDate incomeDate = incomeResultSet.getDate(2).toLocalDate();
+        Double incomeAmount = incomeResultSet.getDouble(3);
+        String incomeSource = incomeResultSet.getString(4);
+
+
+        return new Income(incomeId, incomeDate, incomeAmount, incomeSource);
     }
 }

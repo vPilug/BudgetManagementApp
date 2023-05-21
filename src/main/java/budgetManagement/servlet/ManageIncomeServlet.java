@@ -5,6 +5,7 @@ import budgetManagement.store.IncomesStore;
 import budgetManagement.store.IncomesStoreImpl;
 import budgetManagement.util.Action;
 import budgetManagement.util.ConnectionManager;
+import budgetManagement.util.ServletUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,12 +32,20 @@ public class ManageIncomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Action action = getActionFromRequest(req, resp);
+        Action action = ServletUtils.getActionFromRequest(req, resp);
         switch (action) {
             case DELETE:
                 deleteIncome(req, resp);
                 listIncomes(req, resp);
                 break;
+            case EDIT:
+                loadIncome(req, resp);
+                req.setAttribute("action", Action.EDIT);
+                try {
+                    showAddIncomePage(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             default:
                 listIncomes(req, resp);
         }
@@ -64,20 +73,23 @@ public class ManageIncomeServlet extends HttpServlet {
         }
     }
 
-    private Action getActionFromRequest(HttpServletRequest req, HttpServletResponse resp) {
-        String actionAsString = req.getParameter("action");
-        actionAsString = (actionAsString != null) ? actionAsString : "list";
-        Action action = Action.LIST;
-        try {
-            action = Action.valueOf(actionAsString);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return action;
-    }
-
     private void showIncomePage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/jsps/manage-incomes.jsp").forward(req, resp);
+    }
+
+    private void showAddIncomePage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        req.getRequestDispatcher("/jsps/add-edit-income.jsp").forward(req, resp);
+    }
+
+    private void loadIncome(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String incomeId = req.getParameter("incomeId");
+            UUID incomeID = UUID.fromString(incomeId);
+            Income income = incomesStore.findIncomeById(incomeID);
+            req.setAttribute("income", income);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

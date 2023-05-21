@@ -8,7 +8,13 @@ import java.util.UUID;
 
 public interface ExpensesStore {
     void addExpense(Expense expense) throws SQLException;
+
     List<Expense> getExpenses() throws SQLException;
+
     void updateExpense(UUID id, Expense expense) throws SQLException;
+
     void deleteExpense(UUID id) throws SQLException;
+
+    Expense findExpenseById(UUID id) throws SQLException;
+
 }

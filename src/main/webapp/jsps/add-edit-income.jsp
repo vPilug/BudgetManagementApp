@@ -12,7 +12,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Add expense</title>
+    <title>Add income</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
@@ -75,44 +75,30 @@
     </div>
 </div>
 <%-- END HEADER --%>
-<div style="width: 65%; margin: 0 auto; padding: 50px 0; display: flex; flex-direction: column; align-items: flex-end;"> <%-- START CONTENT --%>
-    <form method="post" action="<c:out value="${context}"/>/add-expense" style="width: 100%">
-        <legend>Add expense</legend>
-        <div class="mb-3">
-            <label for="date" class="form-label">Date</label>
-            <input type="date" id="date" class="form-control" name="date"
-                   value="<c:out value="${requestScope.expense.date}"/>">
-        </div>
-        <div class="mb-3">
-            <label for="amount" class="form-label">Amount</label>
-            <input type="number" step="0.01" id="amount" class="form-control" placeholder="100.00" name="amount"
-                   value="<c:out value="${requestScope.expense.amount}"/>">
-        </div>
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <input type="text" id="description" class="form-control" placeholder="Expense description"
-                   name="description" value="<c:out value="${requestScope.expense.description}"/>">
-        </div>
-        <div class="mb-3">
-            <label for="categoryId" class="form-label">Category</label>
-            <select id="categoryId" class="form-select" name="categoryId">
-                <c:forEach var="category" items="${requestScope.categoriesList}">
-                    <option value="${category.id}">${category.name}</option>
-                </c:forEach>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary"
-                style="width: 400px; height: 50px; background-color: #486976; border: none">
-            Submit
-        </button>
+<div style="width: 65%; margin: 0 auto; padding: 50px 0;"> <%-- START CONTENT --%>
+    <form method="post" action="<c:out value="${context}"/>/add-income">
+        <input type="hidden" name="action" value="<c:out value="${requestScope.action}"/>">
+        <input type="hidden" name="id" value="<c:out value="${requestScope.income.id}"/>">
+        <fieldset enable>
+            <legend>Add income</legend>
+            <div class="mb-3">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" id="date" class="form-control" name="date"
+                       value="<c:out value="${requestScope.income.date}"/>">
+            </div>
+            <div class="mb-3">
+                <label for="amount" class="form-label">Amount</label>
+                <input type="number" id="amount" class="form-control" placeholder="100.00" name="amount"
+                       value="<c:out value="${requestScope.income.amount}"/>">
+            </div>
+            <div class="mb-3">
+                <label for="source" class="form-label">Source</label>
+                <input type="text" id="source" class="form-control" placeholder="Income source" name="source"
+                       value="<c:out value="${requestScope.income.source}"/>">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </fieldset>
     </form>
-    <a href="<c:out value="${context}"/>/add-category">
-        <button type="add" class="btn btn-info"
-                style="width: 300px; height: 50px; background-color: #D1FBED; border: none">
-            Add new
-            category
-        </button>
-    </a>
 </div>
 <%-- END CONTENT --%>
 
