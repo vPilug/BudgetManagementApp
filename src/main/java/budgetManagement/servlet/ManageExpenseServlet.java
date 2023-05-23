@@ -1,5 +1,6 @@
 package budgetManagement.servlet;
 
+import budgetManagement.filers.Filter;
 import budgetManagement.model.Category;
 import budgetManagement.model.Expense;
 import budgetManagement.store.CategoriesStore;
@@ -56,6 +57,22 @@ public class ManageExpenseServlet extends HttpServlet {
                 listExpenses(req, resp);
         }
     }
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        Filter filter = new Filter(req.getParameter("date1"), req.getParameter("date2"), req.getParameter("categoryId"));
+        try {
+            List<Expense> expenses = expensesStore.getFilteredExpenses(filter);
+            req.setAttribute("expensesList", expenses);
+            List<Category> categories = categoriesStore.getCategories();
+            req.setAttribute("categoriesList", categories);
+            req.setAttribute("action_edit", Action.EDIT);
+            req.setAttribute("action_delete", Action.DELETE);
+            showExpensesPage(req, resp);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     protected void listExpenses(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {

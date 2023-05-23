@@ -1,5 +1,6 @@
 package budgetManagement.store;
 
+import budgetManagement.filers.Filter;
 import budgetManagement.model.Expense;
 
 import java.sql.SQLException;
@@ -16,5 +17,7 @@ public interface ExpensesStore {
     void deleteExpense(UUID id) throws SQLException;
 
     Expense findExpenseById(UUID id) throws SQLException;
+
+    List<Expense> getFilteredExpenses(Filter filter) throws SQLException;
 
 }

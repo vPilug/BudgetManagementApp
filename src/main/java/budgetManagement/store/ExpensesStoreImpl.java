@@ -1,5 +1,6 @@
 package budgetManagement.store;
 
+import budgetManagement.filers.Filter;
 import budgetManagement.model.Expense;
 
 import java.sql.*;
@@ -30,10 +31,8 @@ public class ExpensesStoreImpl implements ExpensesStore {
 
     @Override
     public List<Expense> getExpenses() throws SQLException {
-        Statement getExpensesStatement;
-        getExpensesStatement = dbConnection.createStatement();
-        ResultSet expensesResultSet;
-        expensesResultSet = getExpensesStatement.executeQuery("SELECT * FROM expenses");
+        Statement getExpensesStatement = dbConnection.createStatement();
+        ResultSet expensesResultSet = getExpensesStatement.executeQuery("SELECT * FROM expenses");
         List<Expense> expensesList = new ArrayList<>();
         while (true) {
             if (!expensesResultSet.next()) break;
@@ -85,4 +84,56 @@ public class ExpensesStoreImpl implements ExpensesStore {
 
         return new Expense(expenseId, expenseDate, expenseAmount, expenseDescription, expenseCategoryId);
     }
+
+    @Override
+    public List<Expense> getFilteredExpenses(Filter filter) throws SQLException {
+        PreparedStatement filteredStatement = createFilteredStatement(filter);
+        ResultSet expensesResultSet = filteredStatement.executeQuery();
+        List<Expense> expensesList = new ArrayList<>();
+        while (true) {
+            if (!expensesResultSet.next()) break;
+            UUID expenseId;
+            expenseId = UUID.fromString(expensesResultSet.getObject(1).toString());
+            LocalDate expenseDate;
+            expenseDate = expensesResultSet.getDate(2).toLocalDate();
+            double expenseAmount;
+            expenseAmount = expensesResultSet.getDouble(3);
+            String expenseDescription;
+            expenseDescription = expensesResultSet.getString(4);
+            UUID expenseExpenseId;
+            expenseExpenseId = UUID.fromString(expensesResultSet.getObject(5).toString());
+            expensesList.add(new Expense(expenseId, expenseDate, expenseAmount, expenseDescription, expenseExpenseId));
+        }
+        return expensesList;
+    }
+
+    private PreparedStatement createFilteredStatement(Filter filter) throws SQLException {
+        StringBuilder queryBuilder = new StringBuilder("SELECT * FROM expenses WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (filter.getFromDate() != null) {
+            queryBuilder.append(" AND date >= ?");
+            params.add(filter.getFromDate());
+        }
+
+        if (filter.getToDate() != null) {
+            queryBuilder.append(" AND date <= ?");
+            params.add(filter.getToDate());
+        }
+
+        if (filter.getCategoryId() != null) {
+            queryBuilder.append(" AND category_id = ?");
+            params.add(filter.getCategoryId());
+        }
+
+        String query = queryBuilder.toString();
+        PreparedStatement statement = dbConnection.prepareStatement(query);
+
+        for (int i = 0; i < params.size(); i++) {
+            statement.setObject(i + 1, params.get(i));
+        }
+
+        return statement;
+    }
+
 }
