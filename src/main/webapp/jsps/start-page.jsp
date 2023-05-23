@@ -74,7 +74,18 @@
 </div>
 <%-- END HEADER --%>
 <div style="width: 65%; margin: 0 auto; padding: 50px 0;"> <%-- START CONTENT --%>
-
+    <div style="float: right; padding-top: 80px">
+        <img src="https://www.mintnotion.com/wp-content/uploads/2020/10/The-50_30_20-Budget-Rule.png" alt="Budget rule"
+             width="600"
+             height="500">
+    </div>
+    <div style="font-family: 'Open Sans'; font-size: 20px; padding: 205px 650px 0 60px;">
+        <p>
+            Budget Manager App is an application that helps you manage your personal budget and track your income and
+            expenses in a simple and efficient way. With its help, you can add income and expenses to later filter them
+            based on desired time period or category. Additionally, you will find functions to delete or edit them.
+        </p>
+    </div>
 </div>
 <%-- END CONTENT --%>
 <%-- START FOOTER --%>
