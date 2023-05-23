@@ -61,6 +61,8 @@ public class ManageExpenseServlet extends HttpServlet {
         try {
             List<Expense> expenses = expensesStore.getExpenses();
             req.setAttribute("expensesList", expenses);
+            List<Category> categories = categoriesStore.getCategories();
+            req.setAttribute("categoriesList", categories);
             req.setAttribute("action_edit", Action.EDIT);
             req.setAttribute("action_delete", Action.DELETE);
             showExpensesPage(req, resp);
@@ -68,7 +70,6 @@ public class ManageExpenseServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
 
     private void deleteExpense(HttpServletRequest req, HttpServletResponse resp) {
         try {

@@ -86,7 +86,7 @@
             <th scope="col">Date</th>
             <th scope="col">Amount</th>
             <th scope="col">Description</th>
-            <th scope="col">Category ID</th>
+            <th scope="col">Category</th>
         </tr>
         </thead>
         <tbody>
@@ -96,7 +96,13 @@
                 <td><c:out value="${expense.date}"/></td>
                 <td><c:out value="${expense.amount}"/></td>
                 <td><c:out value="${expense.description}"/></td>
-                <td><c:out value="${expense.categoryId}"/></td>
+                <td>
+                    <c:forEach var="category" items="${requestScope.categoriesList}">
+                        <c:if test="${category.id eq expense.categoryId}">
+                            <c:out value="${category.name}"/>
+                        </c:if>
+                    </c:forEach>
+                </td>
                 <td>
                     <a href="<c:out value="${context}"/>/manage-expenses?action=<c:out value="${requestScope.action_edit}"/>&expenseId=<c:out value="${expense.id}"/>"
                        style="text-decoration: none">
