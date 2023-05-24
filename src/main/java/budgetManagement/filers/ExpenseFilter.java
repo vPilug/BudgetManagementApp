@@ -3,12 +3,13 @@ package budgetManagement.filers;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class Filter {
+public class ExpenseFilter {
     private LocalDate fromDate;
     private LocalDate toDate;
+
     private UUID categoryId;
 
-    public Filter(String fromDate, String toDate, String categoryId) {
+    public ExpenseFilter(String fromDate, String toDate, String categoryId) {
         this.fromDate = populateDate(fromDate);
         this.toDate = populateDate(toDate);
         this.categoryId = populateUUID(categoryId);
@@ -29,7 +30,6 @@ public class Filter {
             return null;
         }
     }
-
 
     public LocalDate getFromDate() {
         return fromDate;

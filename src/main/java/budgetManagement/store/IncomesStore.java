@@ -1,5 +1,6 @@
 package budgetManagement.store;
 
+import budgetManagement.filers.IncomeFilter;
 import budgetManagement.model.Income;
 
 import java.sql.SQLException;
@@ -16,5 +17,7 @@ public interface IncomesStore {
     void deleteIncome(UUID id) throws SQLException;
 
     Income findIncomeById(UUID id) throws SQLException;
+
+    List<Income> getFilteredIncomes(IncomeFilter filter) throws SQLException;
 }
 

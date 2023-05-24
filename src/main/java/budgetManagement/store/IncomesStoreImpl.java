@@ -1,5 +1,6 @@
 package budgetManagement.store;
 
+import budgetManagement.filers.IncomeFilter;
 import budgetManagement.model.Income;
 
 import java.sql.*;
@@ -80,4 +81,46 @@ public class IncomesStoreImpl implements IncomesStore {
 
         return new Income(incomeId, incomeDate, incomeAmount, incomeSource);
     }
+
+    @Override
+    public List<Income> getFilteredIncomes(IncomeFilter filter) throws SQLException {
+        PreparedStatement filteredStatement = createFilteredStatement(filter);
+        ResultSet incomesResultSet = filteredStatement.executeQuery();
+        List<Income> incomesList = new ArrayList<>();
+        while (true) {
+            if (!incomesResultSet.next()) break;
+            UUID incomeId = UUID.fromString(incomesResultSet.getObject(1).toString());
+            LocalDate incomeDate = incomesResultSet.getDate(2).toLocalDate();
+            double incomeAmount = incomesResultSet.getDouble(3);
+            String incomeSource = incomesResultSet.getString(4);
+            incomesList.add(new Income(incomeId, incomeDate, incomeAmount, incomeSource));
+        }
+        return incomesList;
+    }
+
+    private PreparedStatement createFilteredStatement(IncomeFilter filter) throws SQLException {
+        StringBuilder queryBuilder = new StringBuilder("SELECT * FROM incomes WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (filter.getFromDate() != null) {
+            queryBuilder.append(" AND date >= ?");
+            params.add(filter.getFromDate());
+        }
+
+        if (filter.getToDate() != null) {
+            queryBuilder.append(" AND date <= ?");
+            params.add(filter.getToDate());
+        }
+
+
+        String query = queryBuilder.toString();
+        PreparedStatement statement = dbConnection.prepareStatement(query);
+
+        for (int i = 0; i < params.size(); i++) {
+            statement.setObject(i + 1, params.get(i));
+        }
+
+        return statement;
+    }
+
 }

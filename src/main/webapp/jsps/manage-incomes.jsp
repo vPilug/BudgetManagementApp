@@ -75,6 +75,28 @@
 </div>
 <%-- END HEADER --%>
 <div style="width: 65%; margin: 0 auto; padding: 50px 0;"> <%-- START CONTENT --%>
+    <form method="post" action="<c:out value="${context}"/>/manage-incomes">
+        <div class="mb-3" style="display: flex; margin-bottom: -15px !important;">
+            <div style="width: 100%; line-height: 50px">
+                <label for="date1" class="form-label">From:</label>
+            </div>
+            <div style="width: 100%; line-height: 50px">
+                <label for="date2" class="form-label">To:</label>
+            </div>
+            <button type="submit" class="btn btn-primary"
+                    style="width: 400px; height: 50px; background-color: #486976; border: none; visibility: hidden">
+                Search
+            </button>
+        </div>
+        <div class="mb-3" style="display: flex">
+            <input type="date" id="date1" class="form-control" name="date1">
+            <input type="date" id="date2" class="form-control" name="date2">
+            <button type="submit" class="btn btn-primary"
+                    style="width: 400px; height: 50px; background-color: #486976; border: none">
+                Search
+            </button>
+        </div>
+    </form>
     <table class="table table-striped table-hover">
         <thead>
         <tr>

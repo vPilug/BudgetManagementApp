@@ -1,5 +1,6 @@
 package budgetManagement.servlet;
 
+import budgetManagement.filers.IncomeFilter;
 import budgetManagement.model.Income;
 import budgetManagement.store.IncomesStore;
 import budgetManagement.store.IncomesStoreImpl;
@@ -48,6 +49,19 @@ public class ManageIncomeServlet extends HttpServlet {
                 }
             default:
                 listIncomes(req, resp);
+        }
+    }
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        IncomeFilter filter = new IncomeFilter(req.getParameter("date1"), req.getParameter("date2"));
+        try {
+            List<Income> incomes = incomesStore.getFilteredIncomes(filter);
+            req.setAttribute("incomesList", incomes);
+            req.setAttribute("action_edit", Action.EDIT);
+            req.setAttribute("action_delete", Action.DELETE);
+            showIncomePage(req, resp);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -1,6 +1,6 @@
 package budgetManagement.store;
 
-import budgetManagement.filers.Filter;
+import budgetManagement.filers.ExpenseFilter;
 import budgetManagement.model.Expense;
 
 import java.sql.*;
@@ -86,7 +86,7 @@ public class ExpensesStoreImpl implements ExpensesStore {
     }
 
     @Override
-    public List<Expense> getFilteredExpenses(Filter filter) throws SQLException {
+    public List<Expense> getFilteredExpenses(ExpenseFilter filter) throws SQLException {
         PreparedStatement filteredStatement = createFilteredStatement(filter);
         ResultSet expensesResultSet = filteredStatement.executeQuery();
         List<Expense> expensesList = new ArrayList<>();
@@ -107,7 +107,7 @@ public class ExpensesStoreImpl implements ExpensesStore {
         return expensesList;
     }
 
-    private PreparedStatement createFilteredStatement(Filter filter) throws SQLException {
+    private PreparedStatement createFilteredStatement(ExpenseFilter filter) throws SQLException {
         StringBuilder queryBuilder = new StringBuilder("SELECT * FROM expenses WHERE 1=1");
         List<Object> params = new ArrayList<>();
 

@@ -1,6 +1,6 @@
 package budgetManagement.servlet;
 
-import budgetManagement.filers.Filter;
+import budgetManagement.filers.ExpenseFilter;
 import budgetManagement.model.Category;
 import budgetManagement.model.Expense;
 import budgetManagement.store.CategoriesStore;
@@ -59,7 +59,7 @@ public class ManageExpenseServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        Filter filter = new Filter(req.getParameter("date1"), req.getParameter("date2"), req.getParameter("categoryId"));
+        ExpenseFilter filter = new ExpenseFilter(req.getParameter("date1"), req.getParameter("date2"), req.getParameter("categoryId"));
         try {
             List<Expense> expenses = expensesStore.getFilteredExpenses(filter);
             req.setAttribute("expensesList", expenses);
