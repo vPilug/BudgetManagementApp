@@ -9,6 +9,7 @@ import budgetManagement.store.ExpensesStore;
 import budgetManagement.store.ExpensesStoreImpl;
 import budgetManagement.util.Action;
 import budgetManagement.util.ConnectionManager;
+import budgetManagement.util.ExpensesCalculator;
 import budgetManagement.util.ServletUtils;
 
 import javax.servlet.ServletException;
@@ -27,6 +28,7 @@ public class ManageExpenseServlet extends HttpServlet {
     private Connection connection;
     private ExpensesStore expensesStore;
     private CategoriesStore categoriesStore;
+    private ExpensesCalculator calculator;
 
 
     @Override
@@ -35,6 +37,7 @@ public class ManageExpenseServlet extends HttpServlet {
         connection = ConnectionManager.getConnection();
         expensesStore = new ExpensesStoreImpl(connection);
         categoriesStore = new CategoriesStoreImpl(connection);
+        calculator = new ExpensesCalculator();
     }
 
     @Override
@@ -62,11 +65,12 @@ public class ManageExpenseServlet extends HttpServlet {
         ExpenseFilter filter = new ExpenseFilter(req.getParameter("date1"), req.getParameter("date2"), req.getParameter("categoryId"));
         try {
             List<Expense> expenses = expensesStore.getFilteredExpenses(filter);
-            req.setAttribute("expensesList", expenses);
+            req.setAttribute("expensesList", calculator.addTotalLine(expenses));
             List<Category> categories = categoriesStore.getCategories();
             req.setAttribute("categoriesList", categories);
             req.setAttribute("action_edit", Action.EDIT);
             req.setAttribute("action_delete", Action.DELETE);
+
             showExpensesPage(req, resp);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -77,7 +81,7 @@ public class ManageExpenseServlet extends HttpServlet {
     protected void listExpenses(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             List<Expense> expenses = expensesStore.getExpenses();
-            req.setAttribute("expensesList", expenses);
+            req.setAttribute("expensesList", calculator.addTotalLine(expenses));
             List<Category> categories = categoriesStore.getCategories();
             req.setAttribute("categoriesList", categories);
             req.setAttribute("action_edit", Action.EDIT);

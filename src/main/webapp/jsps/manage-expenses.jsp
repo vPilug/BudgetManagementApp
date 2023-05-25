@@ -28,8 +28,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
 </head>
+
+<style>
+    #expensesTableBody:last-child {
+        background-color: #D1FBED !important;
+        font-weight: bold;
+    }
+</style>
 <body>
-<div style="padding: 20px 0; background-color: #D1FBED;"> <%-- END HEADER --%>
+<div style="padding: 20px 0; background-color: #D1FBED;"> <%-- START HEADER --%>
     <div style=" display: flex; width: 65%; margin: 0 auto;">
         <div style="width: 72%; display:flex; align-items: center"> <%-- Main Logo div --%>
             <svg xmlns="http://www.w3.org/2000/svg" width="65" height="65" fill="currentColor" class="bi bi-coin"
@@ -109,23 +116,22 @@
             </button>
         </div>
     </form>
-    <table class="table table-striped table-hover">
+    <table class="table table-striped table-hover" style="margin-top: 40px">
         <thead>
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Date</th>
-            <th scope="col">Amount</th>
             <th scope="col">Description</th>
+            <th scope="col">Amount</th>
             <th scope="col">Category</th>
+            <th scope="col">Date</th>
+            <th scope="col">ID</th>
+
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${requestScope.expensesList}" var="expense">
-            <tr style="background-color:#f7fffc">
-                <td><c:out value="${expense.id}"/></td>
-                <td><c:out value="${expense.date}"/></td>
-                <td><c:out value="${expense.amount}"/></td>
+            <tr style="background-color:#f7fffc" id="expensesTableBody">
                 <td><c:out value="${expense.description}"/></td>
+                <td><c:out value="${expense.amount}"/></td>
                 <td>
                     <c:forEach var="category" items="${requestScope.categoriesList}">
                         <c:if test="${category.id eq expense.categoryId}">
@@ -133,22 +139,27 @@
                         </c:if>
                     </c:forEach>
                 </td>
+                <td><c:out value="${expense.date}"/></td>
+                <td><c:out value="${expense.id}"/></td>
                 <td>
-                    <a href="<c:out value="${context}"/>/manage-expenses?action=<c:out value="${requestScope.action_edit}"/>&expenseId=<c:out value="${expense.id}"/>"
-                       style="text-decoration: none">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#486976"
-                             class="bi bi-pencil" viewBox="0 0 16 16">
-                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                        </svg>
-                    </a>
-                    <a href="<c:out value="${context}"/>/manage-expenses?action=<c:out value="${requestScope.action_delete}"/>&expenseId=<c:out value="${expense.id}"/>"
-                       style="padding-left: 10px">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="red" class="bi bi-trash"
-                             viewBox="0 0 16 16">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-                        </svg>
-                    </a>
+                    <c:if test="${expense.id != null}">
+                        <a href="<c:out value="${context}"/>/manage-expenses?action=<c:out value="${requestScope.action_edit}"/>&expenseId=<c:out value="${expense.id}"/>"
+                           style="text-decoration: none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#486976"
+                                 class="bi bi-pencil" viewBox="0 0 16 16">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                            </svg>
+                        </a>
+                        <a href="<c:out value="${context}"/>/manage-expenses?action=<c:out value="${requestScope.action_delete}"/>&expenseId=<c:out value="${expense.id}"/>"
+                           style="padding-left: 10px">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="red"
+                                 class="bi bi-trash"
+                                 viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                            </svg>
+                        </a>
+                    </c:if>
                 </td>
             </tr>
         </c:forEach>

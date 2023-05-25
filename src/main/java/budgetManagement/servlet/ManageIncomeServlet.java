@@ -6,6 +6,7 @@ import budgetManagement.store.IncomesStore;
 import budgetManagement.store.IncomesStoreImpl;
 import budgetManagement.util.Action;
 import budgetManagement.util.ConnectionManager;
+import budgetManagement.util.IncomesCalculator;
 import budgetManagement.util.ServletUtils;
 
 import javax.servlet.ServletException;
@@ -23,12 +24,14 @@ import java.util.UUID;
 public class ManageIncomeServlet extends HttpServlet {
     private Connection connection;
     private IncomesStore incomesStore;
+    private IncomesCalculator calculator;
 
     @Override
     public void init() throws ServletException {
         super.init();
         connection = ConnectionManager.getConnection();
         incomesStore = new IncomesStoreImpl(connection);
+        calculator = new IncomesCalculator();
     }
 
     @Override
@@ -56,7 +59,7 @@ public class ManageIncomeServlet extends HttpServlet {
         IncomeFilter filter = new IncomeFilter(req.getParameter("date1"), req.getParameter("date2"));
         try {
             List<Income> incomes = incomesStore.getFilteredIncomes(filter);
-            req.setAttribute("incomesList", incomes);
+            req.setAttribute("incomesList", calculator.addTotalLine(incomes));
             req.setAttribute("action_edit", Action.EDIT);
             req.setAttribute("action_delete", Action.DELETE);
             showIncomePage(req, resp);
@@ -68,7 +71,7 @@ public class ManageIncomeServlet extends HttpServlet {
     protected void listIncomes(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             List<Income> incomes = incomesStore.getIncomes();
-            req.setAttribute("incomesList", incomes);
+            req.setAttribute("incomesList", calculator.addTotalLine(incomes));
             req.setAttribute("action_edit", Action.EDIT);
             req.setAttribute("action_delete", Action.DELETE);
             showIncomePage(req, resp);
