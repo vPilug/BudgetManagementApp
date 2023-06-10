@@ -41,7 +41,7 @@ public class ManageExpenseServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         Action action = ServletUtils.getActionFromRequest(req, resp);
         switch (action) {
             case DELETE:
@@ -51,18 +51,17 @@ public class ManageExpenseServlet extends HttpServlet {
             case EDIT:
                 loadExpense(req, resp);
                 req.setAttribute("action", Action.EDIT);
-                try {
-                    showAddExpensesPage(req, resp);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                showAddExpensesPage(req, resp);
             default:
                 listExpenses(req, resp);
         }
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        ExpenseFilter filter = new ExpenseFilter(req.getParameter("date1"), req.getParameter("date2"), req.getParameter("categoryId"));
+        Action action = ServletUtils.getActionFromRequest(req, resp);
+        ExpenseFilter filter = (action != Action.EDIT && action != Action.ADD)
+                ? new ExpenseFilter(req.getParameter("date1"), req.getParameter("date2"), req.getParameter("categoryId"))
+                : new ExpenseFilter();
         try {
             List<Expense> expenses = expensesStore.getFilteredExpenses(filter);
             req.setAttribute("expensesList", calculator.addTotalLine(expenses));
@@ -70,15 +69,15 @@ public class ManageExpenseServlet extends HttpServlet {
             req.setAttribute("categoriesList", categories);
             req.setAttribute("action_edit", Action.EDIT);
             req.setAttribute("action_delete", Action.DELETE);
-
             showExpensesPage(req, resp);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            req.setAttribute("error", "An unexpected error occurred. Please try again later!");
+            showExpensesPage(req, resp);
         }
     }
 
-
-    protected void listExpenses(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void listExpenses(HttpServletRequest req, HttpServletResponse resp) {
         try {
             List<Expense> expenses = expensesStore.getExpenses();
             req.setAttribute("expensesList", calculator.addTotalLine(expenses));
@@ -89,6 +88,8 @@ public class ManageExpenseServlet extends HttpServlet {
             showExpensesPage(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
+            req.setAttribute("error", "An unexpected error occurred. Please try again later!");
+            showExpensesPage(req, resp);
         }
     }
 
@@ -97,31 +98,42 @@ public class ManageExpenseServlet extends HttpServlet {
             String expenseId = req.getParameter("expenseId");
             UUID expenseUUID = UUID.fromString(expenseId);
             expensesStore.deleteExpense(expenseUUID);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+            req.setAttribute("error", "The expense could not be deleted.");
         }
     }
 
-    private void showExpensesPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/manage-expenses.jsp").forward(req, resp);
+    private void showExpensesPage(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            req.getRequestDispatcher("/jsps/manage-expenses.jsp").forward(req, resp);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+            System.out.println("getRequestDispatcher not working");
+        }
     }
 
-    private void showAddExpensesPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        List<Category> categoriesList = categoriesStore.getCategories();
-        req.setAttribute("categoriesList", categoriesList);
-        req.getRequestDispatcher("/jsps/add-edit-expense.jsp").forward(req, resp);
+    private void showAddExpensesPage(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            List<Category> categoriesList = categoriesStore.getCategories();
+            req.setAttribute("categoriesList", categoriesList);
+            req.getRequestDispatcher("/jsps/add-edit-expense.jsp").forward(req, resp);
+        } catch (ServletException | IOException | SQLException e) {
+            e.printStackTrace();
+            System.out.println("getRequestDispatcher not working");
+        }
     }
 
 
-    private void loadExpense(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void loadExpense(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String expenseId = req.getParameter("expenseId");
             UUID expenseID = UUID.fromString(expenseId);
             Expense expense = expensesStore.findExpenseById(expenseID);
             req.setAttribute("expense", expense);
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+            req.setAttribute("error", "Could not load expense.");
         }
     }
 

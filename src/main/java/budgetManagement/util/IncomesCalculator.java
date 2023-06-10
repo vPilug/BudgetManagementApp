@@ -12,6 +12,7 @@ public class IncomesCalculator {
         for (Income income : incomesList) {
             total += income.getAmount();
         }
+        total = Math.floor(total * 100) / 100;
         Income totalLine = new Income(null, null, total, "TOTAL");
         List<Income> incomesListWithTotal = new ArrayList<>(incomesList);
         incomesListWithTotal.add(totalLine);

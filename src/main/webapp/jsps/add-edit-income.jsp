@@ -76,29 +76,43 @@
 </div>
 <%-- END HEADER --%>
 <div style="width: 65%; margin: 0 auto; padding: 50px 0;"> <%-- START CONTENT --%>
-    <form method="post" action="<c:out value="${context}"/>/add-income">
-        <input type="hidden" name="action" value="<c:out value="${requestScope.action}"/>">
-        <input type="hidden" name="id" value="<c:out value="${requestScope.income.id}"/>">
-        <fieldset enable>
-            <legend>Add income</legend>
-            <div class="mb-3">
-                <label for="date" class="form-label">Date</label>
-                <input type="date" id="date" class="form-control" name="date"
-                       value="<c:out value="${requestScope.income.date}"/>">
+    <c:choose>
+        <c:when test="${requestScope.error != null}">
+            <div class="alert alert-danger" role="alert">
+                <c:out value="${requestScope.error}"/>
             </div>
-            <div class="mb-3">
-                <label for="amount" class="form-label">Amount</label>
-                <input type="number" id="amount" class="form-control" placeholder="100.00" name="amount"
-                       value="<c:out value="${requestScope.income.amount}"/>">
-            </div>
-            <div class="mb-3">
-                <label for="source" class="form-label">Source</label>
-                <input type="text" id="source" class="form-control" placeholder="Income source" name="source"
-                       value="<c:out value="${requestScope.income.source}"/>">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </fieldset>
-    </form>
+        </c:when>
+        <c:otherwise>
+            <form method="post" action="<c:out value="${context}"/>/add-income">
+                <input type="hidden" name="action" value="<c:out value="${requestScope.action}"/>">
+                <input type="hidden" name="id" value="<c:out value="${requestScope.income.id}"/>">
+                <c:choose>
+                    <c:when test="${requestScope.action == \"ADD\"}">
+                        <legend>Add income</legend>
+                    </c:when>
+                    <c:otherwise>
+                        <legend>Edit income</legend>
+                    </c:otherwise>
+                </c:choose>
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" id="date" class="form-control" name="date"
+                           value="<c:out value="${requestScope.income.date}"/>">
+                </div>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount</label>
+                    <input type="number" id="amount" class="form-control" placeholder="100.00" name="amount"
+                           value="<c:out value="${requestScope.income.amount}"/>">
+                </div>
+                <div class="mb-3">
+                    <label for="source" class="form-label">Source</label>
+                    <input type="text" id="source" class="form-control" placeholder="Income source" name="source"
+                           value="<c:out value="${requestScope.income.source}"/>">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </c:otherwise>
+    </c:choose>
 </div>
 <%-- END CONTENT --%>
 

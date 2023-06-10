@@ -30,13 +30,13 @@ public class AddAndEditIncomeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         req.setAttribute("action", Action.ADD);
         showIncomePage(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         Action action = ServletUtils.getActionFromRequest(req, resp);
         switch (action) {
             case ADD:
@@ -63,6 +63,7 @@ public class AddAndEditIncomeServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             req.setAttribute("action", Action.EDIT);
+            req.setAttribute("error", "The income could not be edited.");
         }
     }
 
@@ -75,15 +76,23 @@ public class AddAndEditIncomeServlet extends HttpServlet {
             incomesStore.addIncome(income);
         } catch (Exception e) {
             e.printStackTrace();
-
+            req.setAttribute("error", "The income could not be added.");
         }
     }
 
-    private void showIncomePage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/add-edit-income.jsp").forward(req, resp);
+    private void showIncomePage(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            req.getRequestDispatcher("/jsps/add-edit-income.jsp").forward(req, resp);
+        } catch (ServletException | IOException e) {
+            System.out.println("getRequestDispatcher not working");
+        }
     }
 
-    private void redirectToIncomesPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect(req.getContextPath() + "/manage-incomes");
+    private void redirectToIncomesPage(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            req.getRequestDispatcher("manage-incomes").forward(req, resp);
+        } catch (ServletException | IOException e) {
+            System.out.println("getRequestDispatcher not working");
+        }
     }
 }

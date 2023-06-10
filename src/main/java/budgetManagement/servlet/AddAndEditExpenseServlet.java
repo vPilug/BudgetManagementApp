@@ -37,19 +37,21 @@ public class AddAndEditExpenseServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
             List<Category> categoriesList = categoriesStore.getCategories();
             req.setAttribute("categoriesList", categoriesList);
             req.setAttribute("action", Action.ADD);
             showExpensePage(req, resp);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            req.setAttribute("error", "An unexpected error occurred when retrieving categories from database. Please try again later!");
+            showExpensePage(req, resp);
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         Action action = ServletUtils.getActionFromRequest(req, resp);
         switch (action) {
             case ADD:
@@ -74,9 +76,10 @@ public class AddAndEditExpenseServlet extends HttpServlet {
                 UUID.fromString(req.getParameter("categoryId")));
         try {
             expensesStore.updateExpense(expenseId, expense);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("action", Action.EDIT);
+            req.setAttribute("error", "The expense could not be edited.");
         }
     }
 
@@ -88,17 +91,25 @@ public class AddAndEditExpenseServlet extends HttpServlet {
                 UUID.fromString(req.getParameter("categoryId")));
         try {
             expensesStore.addExpense(expense);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-
+            req.setAttribute("error", "The expense could not be added.");
         }
     }
 
-    private void showExpensePage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/add-edit-expense.jsp").forward(req, resp);
+    private void showExpensePage(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            req.getRequestDispatcher("/jsps/add-edit-expense.jsp").forward(req, resp);
+        } catch (ServletException | IOException e) {
+            System.out.println("getRequestDispatcher not working");
+        }
     }
 
-    private void redirectToExpensesPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect(req.getContextPath() + "/manage-expenses");
+    private void redirectToExpensesPage(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            req.getRequestDispatcher("manage-expenses").forward(req, resp);
+        } catch (ServletException | IOException e) {
+            System.out.println("getRequestDispatcher not working");
+        }
     }
 }

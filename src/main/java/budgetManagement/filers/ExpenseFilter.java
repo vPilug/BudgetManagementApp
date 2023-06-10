@@ -9,6 +9,10 @@ public class ExpenseFilter {
 
     private UUID categoryId;
 
+    public ExpenseFilter() {
+
+    }
+
     public ExpenseFilter(String fromDate, String toDate, String categoryId) {
         this.fromDate = populateDate(fromDate);
         this.toDate = populateDate(toDate);

@@ -45,11 +45,7 @@ public class ManageIncomeServlet extends HttpServlet {
             case EDIT:
                 loadIncome(req, resp);
                 req.setAttribute("action", Action.EDIT);
-                try {
-                    showAddIncomePage(req, resp);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                showAddIncomePage(req, resp);
             default:
                 listIncomes(req, resp);
         }
@@ -63,12 +59,13 @@ public class ManageIncomeServlet extends HttpServlet {
             req.setAttribute("action_edit", Action.EDIT);
             req.setAttribute("action_delete", Action.DELETE);
             showIncomePage(req, resp);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            req.setAttribute("error", "An unexpected error occurred. Please try again later!");
+            showIncomePage(req, resp);
         }
     }
 
-    protected void listIncomes(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void listIncomes(HttpServletRequest req, HttpServletResponse resp) {
         try {
             List<Income> incomes = incomesStore.getIncomes();
             req.setAttribute("incomesList", calculator.addTotalLine(incomes));
@@ -77,6 +74,8 @@ public class ManageIncomeServlet extends HttpServlet {
             showIncomePage(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
+            req.setAttribute("error", "An unexpected error occurred. Please try again later!");
+            showIncomePage(req, resp);
         }
     }
 
@@ -85,27 +84,39 @@ public class ManageIncomeServlet extends HttpServlet {
             String incomeId = req.getParameter("incomeId");
             UUID incomeUUID = UUID.fromString(incomeId);
             incomesStore.deleteIncome(incomeUUID);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+            req.setAttribute("error", "The expense could not be deleted.");
         }
     }
 
-    private void showIncomePage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/manage-incomes.jsp").forward(req, resp);
+    private void showIncomePage(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            req.getRequestDispatcher("/jsps/manage-incomes.jsp").forward(req, resp);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+            System.out.println("getRequestDispatcher not working");
+        }
     }
 
-    private void showAddIncomePage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        req.getRequestDispatcher("/jsps/add-edit-income.jsp").forward(req, resp);
+    private void showAddIncomePage(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            req.getRequestDispatcher("/jsps/add-edit-income.jsp").forward(req, resp);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+            System.out.println("getRequestDispatcher not working");
+        }
     }
 
-    private void loadIncome(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void loadIncome(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String incomeId = req.getParameter("incomeId");
             UUID incomeID = UUID.fromString(incomeId);
             Income income = incomesStore.findIncomeById(incomeID);
             req.setAttribute("income", income);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+            req.setAttribute("error", "Could not load income.");
         }
     }
 

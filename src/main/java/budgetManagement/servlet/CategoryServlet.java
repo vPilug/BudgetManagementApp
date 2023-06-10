@@ -28,27 +28,37 @@ public class CategoryServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/add-category.jsp").forward(req, resp);
-    }
-
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            addCategory(req, resp);
-            redirectToExpensesPage(req, resp);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            req.getRequestDispatcher("/jsps/add-category.jsp").forward(req, resp);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+            System.out.println("getRequestDispatcher not working");
         }
     }
 
-    private void addCategory(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        Category category = new Category(UUID.randomUUID(),
-                req.getParameter("name"));
-        categoriesStore.addCategory(category);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        addCategory(req, resp);
+        redirectToExpensesPage(req, resp);
     }
 
-    private void redirectToExpensesPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect(req.getContextPath() + "/add-expense");
+    private void addCategory(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            Category category = new Category(UUID.randomUUID(),
+                    req.getParameter("name"));
+            categoriesStore.addCategory(category);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            req.setAttribute("error", "The category could not be added.");
+        }
     }
 
+    private void redirectToExpensesPage(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            resp.sendRedirect("add-expense");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("getRequestDispatcher not working");
+        }
+    }
 }

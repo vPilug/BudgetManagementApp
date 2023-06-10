@@ -13,6 +13,7 @@ public class ExpensesCalculator {
         for (Expense expense : expensesList) {
             total += expense.getAmount();
         }
+        total = Math.floor(total * 100) / 100;
         Expense totalLine = new Expense(null, null, total, "TOTAL", null);
         List<Expense> expensesListWithTotal = new ArrayList<>(expensesList);
         expensesListWithTotal.add(totalLine);

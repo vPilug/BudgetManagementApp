@@ -82,6 +82,11 @@
 </div>
 <%-- END HEADER --%>
 <div style="width: 65%; margin: 0 auto; padding: 50px 0;"> <%-- START CONTENT --%>
+    <c:if test="${requestScope.error != null}">
+        <div class="alert alert-danger" role="alert">
+            <c:out value="${requestScope.error}"/>
+        </div>
+    </c:if>
     <form method="post" action="<c:out value="${context}"/>/manage-incomes">
         <div class="mb-3" style="display: flex; margin-bottom: -15px !important;">
             <div style="width: 100%; line-height: 50px">

@@ -10,7 +10,12 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/"})
 public class StartPage extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/start-page.jsp").forward(req, resp);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            req.getRequestDispatcher("/jsps/start-page.jsp").forward(req, resp);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+            System.out.println("getRequestDispatcher not working");
+        }
     }
 }
