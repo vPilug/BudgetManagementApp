@@ -60,6 +60,7 @@ public class ManageIncomeServlet extends HttpServlet {
             req.setAttribute("action_delete", Action.DELETE);
             showIncomePage(req, resp);
         } catch (SQLException e) {
+            e.printStackTrace();
             req.setAttribute("error", "An unexpected error occurred. Please try again later!");
             showIncomePage(req, resp);
         }

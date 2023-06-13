@@ -32,7 +32,7 @@ public class IncomesStoreImpl implements IncomesStore {
         Statement getIncomesStatement;
         getIncomesStatement = dbConnection.createStatement();
         ResultSet incomesResultSet;
-        incomesResultSet = getIncomesStatement.executeQuery("SELECT * FROM incomes");
+        incomesResultSet = getIncomesStatement.executeQuery("SELECT * FROM incomes i ORDER BY i.date DESC");
         List<Income> incomesList = new ArrayList<>();
         while (true) {
             if (!incomesResultSet.next()) break;
@@ -99,19 +99,19 @@ public class IncomesStoreImpl implements IncomesStore {
     }
 
     private PreparedStatement createFilteredStatement(IncomeFilter filter) throws SQLException {
-        StringBuilder queryBuilder = new StringBuilder("SELECT * FROM incomes WHERE 1=1");
+        StringBuilder queryBuilder = new StringBuilder("SELECT * FROM incomes WHERE 1=1 ");
         List<Object> params = new ArrayList<>();
 
         if (filter.getFromDate() != null) {
-            queryBuilder.append(" AND date >= ?");
+            queryBuilder.append(" AND date >= ? ");
             params.add(filter.getFromDate());
         }
 
         if (filter.getToDate() != null) {
-            queryBuilder.append(" AND date <= ?");
+            queryBuilder.append(" AND date <= ? ");
             params.add(filter.getToDate());
         }
-
+        queryBuilder.append(" ORDER BY date DESC ");
 
         String query = queryBuilder.toString();
         PreparedStatement statement = dbConnection.prepareStatement(query);

@@ -32,7 +32,7 @@ public class ExpensesStoreImpl implements ExpensesStore {
     @Override
     public List<Expense> getExpenses() throws SQLException {
         Statement getExpensesStatement = dbConnection.createStatement();
-        ResultSet expensesResultSet = getExpensesStatement.executeQuery("SELECT * FROM expenses");
+        ResultSet expensesResultSet = getExpensesStatement.executeQuery("SELECT * FROM expenses e ORDER BY e.date DESC");
         List<Expense> expensesList = new ArrayList<>();
         while (true) {
             if (!expensesResultSet.next()) break;
@@ -125,6 +125,7 @@ public class ExpensesStoreImpl implements ExpensesStore {
             queryBuilder.append(" AND category_id = ?");
             params.add(filter.getCategoryId());
         }
+        queryBuilder.append(" ORDER BY date DESC ");
 
         String query = queryBuilder.toString();
         PreparedStatement statement = dbConnection.prepareStatement(query);
