@@ -6,6 +6,8 @@ import budgetManagement.store.IncomesStoreImpl;
 import budgetManagement.util.Action;
 import budgetManagement.util.ConnectionManager;
 import budgetManagement.util.ServletUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +21,7 @@ import java.util.UUID;
 
 @WebServlet(urlPatterns = {"/add-income"})
 public class AddAndEditIncomeServlet extends HttpServlet {
+    private static final Logger LOGGER = LogManager.getLogger(AddAndEditIncomeServlet.class);
     private Connection connection;
     private IncomesStore incomesStore;
 
@@ -64,6 +67,7 @@ public class AddAndEditIncomeServlet extends HttpServlet {
             e.printStackTrace();
             req.setAttribute("action", Action.EDIT);
             req.setAttribute("error", "The income could not be edited.");
+            LOGGER.error("SQLException when the user wants to edit an income");
         }
     }
 
@@ -77,6 +81,7 @@ public class AddAndEditIncomeServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             req.setAttribute("error", "The income could not be added.");
+            LOGGER.error("SQLException when the user wants to add an income");
         }
     }
 
@@ -85,6 +90,7 @@ public class AddAndEditIncomeServlet extends HttpServlet {
             req.getRequestDispatcher("/jsps/add-edit-income.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
             System.out.println("getRequestDispatcher not working");
+            LOGGER.error("getRequestDispatcher(add-edit-income.jsp) not working");
         }
     }
 
@@ -93,6 +99,7 @@ public class AddAndEditIncomeServlet extends HttpServlet {
             req.getRequestDispatcher("manage-incomes").forward(req, resp);
         } catch (ServletException | IOException e) {
             System.out.println("getRequestDispatcher not working");
+            LOGGER.error("getRequestDispatcher(manage-incomes) not working");
         }
     }
 }

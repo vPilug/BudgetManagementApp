@@ -4,6 +4,8 @@ import budgetManagement.model.Category;
 import budgetManagement.store.CategoriesStore;
 import budgetManagement.store.CategoriesStoreImpl;
 import budgetManagement.util.ConnectionManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +19,7 @@ import java.util.UUID;
 
 @WebServlet(urlPatterns = {"/add-category"})
 public class CategoryServlet extends HttpServlet {
+    private static final Logger LOGGER = LogManager.getLogger(CategoryServlet.class);
     private Connection connection;
     private CategoriesStore categoriesStore;
 
@@ -34,6 +37,7 @@ public class CategoryServlet extends HttpServlet {
         } catch (ServletException | IOException e) {
             e.printStackTrace();
             System.out.println("getRequestDispatcher not working");
+            LOGGER.error("Exception in doGet");
         }
     }
 
@@ -50,6 +54,7 @@ public class CategoryServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", "The category could not be added.");
+            LOGGER.error("The category could not be added.");
         }
     }
 
@@ -59,6 +64,7 @@ public class CategoryServlet extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("getRequestDispatcher not working");
+            LOGGER.error("getRequestDispatcher(add-expense) not working");
         }
     }
 }

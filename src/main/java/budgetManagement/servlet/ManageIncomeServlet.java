@@ -8,6 +8,8 @@ import budgetManagement.util.Action;
 import budgetManagement.util.ConnectionManager;
 import budgetManagement.util.IncomesCalculator;
 import budgetManagement.util.ServletUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +24,7 @@ import java.util.UUID;
 
 @WebServlet(urlPatterns = {"/manage-incomes"})
 public class ManageIncomeServlet extends HttpServlet {
+    private static final Logger LOGGER = LogManager.getLogger(ManageIncomeServlet.class);
     private Connection connection;
     private IncomesStore incomesStore;
     private IncomesCalculator calculator;
@@ -63,6 +66,7 @@ public class ManageIncomeServlet extends HttpServlet {
             e.printStackTrace();
             req.setAttribute("error", "An unexpected error occurred. Please try again later!");
             showIncomePage(req, resp);
+            LOGGER.error("SQLException in doPost");
         }
     }
 
@@ -77,6 +81,7 @@ public class ManageIncomeServlet extends HttpServlet {
             e.printStackTrace();
             req.setAttribute("error", "An unexpected error occurred. Please try again later!");
             showIncomePage(req, resp);
+            LOGGER.error("SQLException when the user wants to list the incomes");
         }
     }
 
@@ -88,6 +93,7 @@ public class ManageIncomeServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", "The expense could not be deleted.");
+            LOGGER.error("SQLException when the user wants to delete an income");
         }
     }
 
@@ -97,6 +103,7 @@ public class ManageIncomeServlet extends HttpServlet {
         } catch (ServletException | IOException e) {
             e.printStackTrace();
             System.out.println("getRequestDispatcher not working");
+            LOGGER.error("getRequestDispatcher(manage-incomes.jsp) not working");
         }
     }
 
@@ -106,6 +113,7 @@ public class ManageIncomeServlet extends HttpServlet {
         } catch (ServletException | IOException e) {
             e.printStackTrace();
             System.out.println("getRequestDispatcher not working");
+            LOGGER.error("getRequestDispatcher(add-edit-income.jsp) not working");
         }
     }
 
@@ -118,6 +126,7 @@ public class ManageIncomeServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", "Could not load income.");
+            LOGGER.error("Could not load income.");
         }
     }
 

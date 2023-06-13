@@ -9,6 +9,8 @@ import budgetManagement.store.ExpensesStoreImpl;
 import budgetManagement.util.Action;
 import budgetManagement.util.ConnectionManager;
 import budgetManagement.util.ServletUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,6 +26,7 @@ import java.util.UUID;
 
 @WebServlet(urlPatterns = {"/add-expense"})
 public class AddAndEditExpenseServlet extends HttpServlet {
+    private static final Logger LOGGER = LogManager.getLogger(AddAndEditExpenseServlet.class);
     public CategoriesStore categoriesStore;
     public ExpensesStore expensesStore;
     private Connection connection;
@@ -46,6 +49,7 @@ public class AddAndEditExpenseServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", "An unexpected error occurred when retrieving categories from database. Please try again later!");
+            LOGGER.error("SQLException in doGet");
             showExpensePage(req, resp);
         }
     }
@@ -80,6 +84,7 @@ public class AddAndEditExpenseServlet extends HttpServlet {
             e.printStackTrace();
             req.setAttribute("action", Action.EDIT);
             req.setAttribute("error", "The expense could not be edited.");
+            LOGGER.error("SQLException when the user wants to edit an expense");
         }
     }
 
@@ -94,6 +99,9 @@ public class AddAndEditExpenseServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", "The expense could not be added.");
+            LOGGER.error("SQLException when the user wants to add an expense");
+            LOGGER.info("SQLException when the user wants to add an expense??");
+            LOGGER.debug("SQLException when the user wants to add an expense!!");
         }
     }
 
@@ -102,6 +110,7 @@ public class AddAndEditExpenseServlet extends HttpServlet {
             req.getRequestDispatcher("/jsps/add-edit-expense.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
             System.out.println("getRequestDispatcher not working");
+            LOGGER.error("getRequestDispatcher(add-edit-expense.jsp) not working");
         }
     }
 
@@ -110,6 +119,7 @@ public class AddAndEditExpenseServlet extends HttpServlet {
             req.getRequestDispatcher("manage-expenses").forward(req, resp);
         } catch (ServletException | IOException e) {
             System.out.println("getRequestDispatcher not working");
+            LOGGER.error("getRequestDispatcher(manage-expenses) not working");
         }
     }
 }

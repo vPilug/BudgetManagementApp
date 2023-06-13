@@ -11,6 +11,8 @@ import budgetManagement.util.Action;
 import budgetManagement.util.ConnectionManager;
 import budgetManagement.util.ExpensesCalculator;
 import budgetManagement.util.ServletUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,6 +27,7 @@ import java.util.UUID;
 
 @WebServlet(urlPatterns = {"/manage-expenses"})
 public class ManageExpenseServlet extends HttpServlet {
+    private static final Logger LOGGER = LogManager.getLogger(ManageExpenseServlet.class);
     private Connection connection;
     private ExpensesStore expensesStore;
     private CategoriesStore categoriesStore;
@@ -73,6 +76,7 @@ public class ManageExpenseServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", "An unexpected error occurred. Please try again later!");
+            LOGGER.error("SQLException in doPost");
             showExpensesPage(req, resp);
         }
     }
@@ -90,6 +94,7 @@ public class ManageExpenseServlet extends HttpServlet {
             e.printStackTrace();
             req.setAttribute("error", "An unexpected error occurred. Please try again later!");
             showExpensesPage(req, resp);
+            LOGGER.error("SQLException when the user wants to list the expenses");
         }
     }
 
@@ -101,6 +106,8 @@ public class ManageExpenseServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", "The expense could not be deleted.");
+            LOGGER.error("SQLException when the user wants to delete an expense");
+
         }
     }
 
@@ -110,6 +117,7 @@ public class ManageExpenseServlet extends HttpServlet {
         } catch (ServletException | IOException e) {
             e.printStackTrace();
             System.out.println("getRequestDispatcher not working");
+            LOGGER.error("getRequestDispatcher(manage-expenses.jsp) not working");
         }
     }
 
@@ -121,6 +129,7 @@ public class ManageExpenseServlet extends HttpServlet {
         } catch (ServletException | IOException | SQLException e) {
             e.printStackTrace();
             System.out.println("getRequestDispatcher not working");
+            LOGGER.error("getRequestDispatcher(add-edit-expense.jsp) not working");
         }
     }
 
@@ -134,6 +143,7 @@ public class ManageExpenseServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", "Could not load expense.");
+            LOGGER.error("Could not load expense.");
         }
     }
 
