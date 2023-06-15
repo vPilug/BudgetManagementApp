@@ -24,9 +24,9 @@ import java.util.UUID;
 
 @WebServlet(urlPatterns = {"/add-expense"})
 public class AddAndEditExpenseServlet extends HttpServlet {
+    public CategoriesStore categoriesStore;
+    public ExpensesStore expensesStore;
     private Connection connection;
-    private ExpensesStore expensesStore;
-    private CategoriesStore categoriesStore;
 
     @Override
     public void init() throws ServletException {
@@ -37,7 +37,7 @@ public class AddAndEditExpenseServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
             List<Category> categoriesList = categoriesStore.getCategories();
             req.setAttribute("categoriesList", categoriesList);
@@ -51,7 +51,7 @@ public class AddAndEditExpenseServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) {
         Action action = ServletUtils.getActionFromRequest(req, resp);
         switch (action) {
             case ADD:
@@ -83,7 +83,7 @@ public class AddAndEditExpenseServlet extends HttpServlet {
         }
     }
 
-    private void addExpense(HttpServletRequest req, HttpServletResponse resp) {
+    public void addExpense(HttpServletRequest req, HttpServletResponse resp) {
         Expense expense = new Expense(UUID.randomUUID(),
                 LocalDate.parse(req.getParameter("date")),
                 Double.parseDouble(req.getParameter("amount")),
