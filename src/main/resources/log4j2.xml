@@ -4,18 +4,20 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
-        <File name="File" fileName="src/main/resources/journal.log" bufferedIO="true" immediateFlush="true">
+        <File name="File" fileName="${sys:catalina.home}/logs/journal.log" bufferedIO="true" immediateFlush="true">
             <PatternLayout>
                 <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
             </PatternLayout>
         </File>
     </Appenders>
     <Loggers>
-        <Logger name="budgetManagement.servlet" level="error" additivity="false">
+        <Logger name="budgetManagement" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
         </Logger>
         <Root level="error">
             <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
         </Root>
     </Loggers>
 </Configuration>

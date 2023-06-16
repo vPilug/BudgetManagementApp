@@ -109,7 +109,10 @@
                     <input type="text" id="source" class="form-control" placeholder="Income source" name="source"
                            value="<c:out value="${requestScope.income.source}"/>">
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary"
+                        style="width: 400px; height: 50px; background-color: #486976; border: none">
+                    Submit
+                </button>
             </form>
         </c:otherwise>
     </c:choose>

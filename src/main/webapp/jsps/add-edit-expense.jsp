@@ -122,7 +122,6 @@
                     Submit
                 </button>
             </form>
-
             <a href="<c:out value="${context}"/>/add-category">
                 <button type="add" class="btn btn-info"
                         style="width: 300px; height: 50px; background-color: #D1FBED; border: none">

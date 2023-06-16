@@ -19,7 +19,7 @@ public class ExpensesStoreImpl implements ExpensesStore {
 
     @Override
     public void addExpense(Expense expense) throws SQLException {
-        String insertStatement = "INSERT ITO expenses VALUES (?, ?, ?, ?, ?)";
+        String insertStatement = "INSERT INTO expenses VALUES (?, ?, ?, ?, ?)";
         PreparedStatement createExpenseStatement = dbConnection.prepareStatement(insertStatement);
         createExpenseStatement.setObject(1, expense.getId());
         createExpenseStatement.setObject(2, expense.getDate());
