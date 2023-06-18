@@ -28,7 +28,7 @@
 <body>
 <div style="padding: 20px 0; background-color: #D1FBED;"> <%-- START HEADER --%>
     <div style=" display: flex; width: 65%; margin: 0 auto;">
-        <div style="width: 72%; display:flex; align-items: center"> <%-- Main Logo div --%>
+        <div style="width: 58%; display:flex; align-items: center"> <%-- Main Logo div --%>
             <svg xmlns="http://www.w3.org/2000/svg" width="65" height="65" fill="currentColor" class="bi bi-coin"
                  viewBox="0 0 16 16">
                 <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
@@ -37,7 +37,7 @@
             </svg>
             <span style="font-family: 'Great Vibes'; font-size: 45px; font-weight: bold; padding-left: 20px;">Budget Management App</span>
         </div>
-        <div style="width: 28%; display: flex; justify-content: space-evenly; align-items: flex-end;"> <%-- Main Buttons div --%>
+        <div style="width: 42%; display: flex; justify-content: space-between; align-items: flex-end;"> <%-- Main Buttons div --%>
             <a href="#">
                 <button class="btn btn-lg" style="padding: 5px 12px; background-color: #486976;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="#ffffff"
@@ -51,7 +51,7 @@
                 <button class="btn dropdown-toggle btn-lg" type="button" style="background-color: #486976; color: #fff;"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">
-                    History
+                    Transactions history
                 </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="manage-incomes">Incomes</a></li>
@@ -62,7 +62,7 @@
                 <button class="btn dropdown-toggle btn-lg" style="background-color: #486976; color: #fff;" type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">
-                    Add
+                    Add transaction
                 </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="add-income">Incomes</a></li>
@@ -82,7 +82,7 @@
     <div style="font-family: 'Open Sans'; font-size: 20px; padding: 205px 650px 0 60px;">
         <p>
             Budget Manager App is an application that helps you manage your personal budget and track your income and
-            expenses in a simple and efficient way. With its help, you can add income and expenses to later filter them
+            expenses in a simple and efficient way. With its help, you can add incomes and expenses to later filter them
             based on desired time period or category. Additionally, you will find functions to delete or edit them.
         </p>
     </div>

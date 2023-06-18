@@ -115,7 +115,6 @@ public class ManageExpenseServlet extends HttpServlet {
             req.getRequestDispatcher("/jsps/manage-expenses.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
-            System.out.println("getRequestDispatcher not working");
             LOGGER.error("getRequestDispatcher(manage-expenses.jsp) not working");
         }
     }
@@ -127,7 +126,6 @@ public class ManageExpenseServlet extends HttpServlet {
             req.getRequestDispatcher("/jsps/add-edit-expense.jsp").forward(req, resp);
         } catch (ServletException | IOException | SQLException e) {
             e.printStackTrace();
-            System.out.println("getRequestDispatcher not working");
             LOGGER.error("getRequestDispatcher(add-edit-expense.jsp) not working");
         }
     }

@@ -102,7 +102,6 @@ public class ManageIncomeServlet extends HttpServlet {
             req.getRequestDispatcher("/jsps/manage-incomes.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
-            System.out.println("getRequestDispatcher not working");
             LOGGER.error("getRequestDispatcher(manage-incomes.jsp) not working");
         }
     }
@@ -112,7 +111,6 @@ public class ManageIncomeServlet extends HttpServlet {
             req.getRequestDispatcher("/jsps/add-edit-income.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
-            System.out.println("getRequestDispatcher not working");
             LOGGER.error("getRequestDispatcher(add-edit-income.jsp) not working");
         }
     }

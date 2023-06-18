@@ -20,7 +20,6 @@ public class StartPage extends HttpServlet {
             req.getRequestDispatcher("/jsps/start-page.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
-            System.out.println("getRequestDispatcher not working");
             LOGGER.error("getRequestDispatcher(start-page.jsp) not working");
         }
     }

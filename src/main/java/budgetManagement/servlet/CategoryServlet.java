@@ -36,7 +36,6 @@ public class CategoryServlet extends HttpServlet {
             req.getRequestDispatcher("/jsps/add-category.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
-            System.out.println("getRequestDispatcher not working");
             LOGGER.error("Exception in doGet");
         }
     }
@@ -48,6 +47,9 @@ public class CategoryServlet extends HttpServlet {
 
     public void addCategory(HttpServletRequest req, HttpServletResponse resp) {
         try {
+            if (req.getParameter("name").isEmpty()) {
+                throw new IllegalArgumentException("Name is empty!");
+            }
             Category category = new Category(UUID.randomUUID(),
                     req.getParameter("name"));
             categoriesStore.addCategory(category);
@@ -55,6 +57,9 @@ public class CategoryServlet extends HttpServlet {
             e.printStackTrace();
             req.setAttribute("error", "The category could not be added.");
             LOGGER.error("The category could not be added.");
+        } catch (IllegalArgumentException illegalArgumentException) {
+            illegalArgumentException.printStackTrace();
+            req.setAttribute("error", illegalArgumentException.getMessage());
         }
     }
 
@@ -63,7 +68,6 @@ public class CategoryServlet extends HttpServlet {
             resp.sendRedirect("add-expense");
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("getRequestDispatcher not working");
             LOGGER.error("getRequestDispatcher(add-expense) not working");
         }
     }
