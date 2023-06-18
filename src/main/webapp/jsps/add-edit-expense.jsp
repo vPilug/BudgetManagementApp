@@ -12,7 +12,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Add expense</title>
+    <title>Add servlet</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
@@ -88,10 +88,10 @@
                 <input type="hidden" name="id" value="<c:out value="${requestScope.expense.id}"/>">
                 <c:choose>
                     <c:when test="${requestScope.action == \"ADD\"}">
-                        <legend>Add expense</legend>
+                        <legend>Add servlet</legend>
                     </c:when>
                     <c:otherwise>
-                        <legend>Edit expense</legend>
+                        <legend>Edit servlet</legend>
                     </c:otherwise>
                 </c:choose>
                 <div class="mb-3">

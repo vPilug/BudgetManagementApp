@@ -25,9 +25,9 @@ import java.util.UUID;
 @WebServlet(urlPatterns = {"/manage-incomes"})
 public class ManageIncomeServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(ManageIncomeServlet.class);
+    public IncomesStore incomesStore;
+    public IncomesCalculator calculator;
     private Connection connection;
-    private IncomesStore incomesStore;
-    private IncomesCalculator calculator;
 
     @Override
     public void init() throws ServletException {
@@ -38,7 +38,7 @@ public class ManageIncomeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Action action = ServletUtils.getActionFromRequest(req, resp);
         switch (action) {
             case DELETE:
@@ -54,7 +54,7 @@ public class ManageIncomeServlet extends HttpServlet {
         }
     }
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) {
         IncomeFilter filter = new IncomeFilter(req.getParameter("date1"), req.getParameter("date2"));
         try {
             List<Income> incomes = incomesStore.getFilteredIncomes(filter);
@@ -70,7 +70,7 @@ public class ManageIncomeServlet extends HttpServlet {
         }
     }
 
-    protected void listIncomes(HttpServletRequest req, HttpServletResponse resp) {
+    public void listIncomes(HttpServletRequest req, HttpServletResponse resp) {
         try {
             List<Income> incomes = incomesStore.getIncomes();
             req.setAttribute("incomesList", calculator.addTotalLine(incomes));
@@ -85,7 +85,7 @@ public class ManageIncomeServlet extends HttpServlet {
         }
     }
 
-    private void deleteIncome(HttpServletRequest req, HttpServletResponse resp) {
+    public void deleteIncome(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String incomeId = req.getParameter("incomeId");
             UUID incomeUUID = UUID.fromString(incomeId);
@@ -97,7 +97,7 @@ public class ManageIncomeServlet extends HttpServlet {
         }
     }
 
-    private void showIncomePage(HttpServletRequest req, HttpServletResponse resp) {
+    public void showIncomePage(HttpServletRequest req, HttpServletResponse resp) {
         try {
             req.getRequestDispatcher("/jsps/manage-incomes.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
@@ -107,7 +107,7 @@ public class ManageIncomeServlet extends HttpServlet {
         }
     }
 
-    private void showAddIncomePage(HttpServletRequest req, HttpServletResponse resp) {
+    public void showAddIncomePage(HttpServletRequest req, HttpServletResponse resp) {
         try {
             req.getRequestDispatcher("/jsps/add-edit-income.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
@@ -117,7 +117,7 @@ public class ManageIncomeServlet extends HttpServlet {
         }
     }
 
-    private void loadIncome(HttpServletRequest req, HttpServletResponse resp) {
+    public void loadIncome(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String incomeId = req.getParameter("incomeId");
             UUID incomeID = UUID.fromString(incomeId);

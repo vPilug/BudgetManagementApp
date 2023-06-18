@@ -26,28 +26,28 @@ public class Expense {
         return date;
     }
 
-    public double getAmount() {
-        return amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public UUID getCategoryId() {
-        return categoryId;
-    }
-
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public double getAmount() {
+        return amount;
     }
 
     public void setAmount(double amount) {
         this.amount = amount;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public UUID getCategoryId() {
+        return categoryId;
     }
 
     @Override

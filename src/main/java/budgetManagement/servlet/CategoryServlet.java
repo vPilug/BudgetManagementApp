@@ -20,8 +20,8 @@ import java.util.UUID;
 @WebServlet(urlPatterns = {"/add-category"})
 public class CategoryServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(CategoryServlet.class);
+    public CategoriesStore categoriesStore;
     private Connection connection;
-    private CategoriesStore categoriesStore;
 
     @Override
     public void init() throws ServletException {
@@ -31,7 +31,7 @@ public class CategoryServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
             req.getRequestDispatcher("/jsps/add-category.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
@@ -41,12 +41,12 @@ public class CategoryServlet extends HttpServlet {
         }
     }
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) {
         addCategory(req, resp);
         redirectToExpensesPage(req, resp);
     }
 
-    private void addCategory(HttpServletRequest req, HttpServletResponse resp) {
+    public void addCategory(HttpServletRequest req, HttpServletResponse resp) {
         try {
             Category category = new Category(UUID.randomUUID(),
                     req.getParameter("name"));

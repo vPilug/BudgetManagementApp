@@ -15,7 +15,7 @@ public class StartPage extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(StartPage.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
             req.getRequestDispatcher("/jsps/start-page.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {

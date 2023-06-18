@@ -28,11 +28,10 @@ import java.util.UUID;
 @WebServlet(urlPatterns = {"/manage-expenses"})
 public class ManageExpenseServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(ManageExpenseServlet.class);
+    public ExpensesStore expensesStore;
+    public CategoriesStore categoriesStore;
+    public ExpensesCalculator calculator;
     private Connection connection;
-    private ExpensesStore expensesStore;
-    private CategoriesStore categoriesStore;
-    private ExpensesCalculator calculator;
-
 
     @Override
     public void init() throws ServletException {
@@ -44,7 +43,7 @@ public class ManageExpenseServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) {
         Action action = ServletUtils.getActionFromRequest(req, resp);
         switch (action) {
             case DELETE:
@@ -60,7 +59,7 @@ public class ManageExpenseServlet extends HttpServlet {
         }
     }
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) {
         Action action = ServletUtils.getActionFromRequest(req, resp);
         ExpenseFilter filter = (action != Action.EDIT && action != Action.ADD)
                 ? new ExpenseFilter(req.getParameter("date1"), req.getParameter("date2"), req.getParameter("categoryId"))
@@ -81,7 +80,7 @@ public class ManageExpenseServlet extends HttpServlet {
         }
     }
 
-    protected void listExpenses(HttpServletRequest req, HttpServletResponse resp) {
+    public void listExpenses(HttpServletRequest req, HttpServletResponse resp) {
         try {
             List<Expense> expenses = expensesStore.getExpenses();
             req.setAttribute("expensesList", calculator.addTotalLine(expenses));
@@ -98,7 +97,7 @@ public class ManageExpenseServlet extends HttpServlet {
         }
     }
 
-    private void deleteExpense(HttpServletRequest req, HttpServletResponse resp) {
+    public void deleteExpense(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String expenseId = req.getParameter("expenseId");
             UUID expenseUUID = UUID.fromString(expenseId);
@@ -111,7 +110,7 @@ public class ManageExpenseServlet extends HttpServlet {
         }
     }
 
-    private void showExpensesPage(HttpServletRequest req, HttpServletResponse resp) {
+    public void showExpensesPage(HttpServletRequest req, HttpServletResponse resp) {
         try {
             req.getRequestDispatcher("/jsps/manage-expenses.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
@@ -121,7 +120,7 @@ public class ManageExpenseServlet extends HttpServlet {
         }
     }
 
-    private void showAddExpensesPage(HttpServletRequest req, HttpServletResponse resp) {
+    public void showAddExpensesPage(HttpServletRequest req, HttpServletResponse resp) {
         try {
             List<Category> categoriesList = categoriesStore.getCategories();
             req.setAttribute("categoriesList", categoriesList);
@@ -134,7 +133,7 @@ public class ManageExpenseServlet extends HttpServlet {
     }
 
 
-    private void loadExpense(HttpServletRequest req, HttpServletResponse resp) {
+    public void loadExpense(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String expenseId = req.getParameter("expenseId");
             UUID expenseID = UUID.fromString(expenseId);

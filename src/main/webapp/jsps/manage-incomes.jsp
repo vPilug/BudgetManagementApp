@@ -184,7 +184,7 @@
     </div>
     <%-- END CONTENT --%>
     <%-- START FOOTER --%>
-    <div style="background-color: #98B1B2; padding: 20px 0; width: 100%; position: absolute; bottom: 0; display: flex; justify-content: center; color: white;">
+    <div style="background-color: #98B1B2; padding: 20px 0; width: 100%; display: flex; justify-content: center; color: white;">
         <a href="https://www.linkedin.com/in/pilug/" target="_blank">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-linkedin"
                  viewBox="0 0 16 16">

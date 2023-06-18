@@ -72,36 +72,49 @@ public class AddAndEditExpenseServlet extends HttpServlet {
     }
 
     private void editExpense(HttpServletRequest req, HttpServletResponse resp) {
-        UUID expenseId = UUID.fromString(req.getParameter("id"));
-        Expense expense = new Expense(UUID.fromString(req.getParameter("id")),
-                LocalDate.parse(req.getParameter("date")),
-                Double.parseDouble(req.getParameter("amount")),
-                req.getParameter("description"),
-                UUID.fromString(req.getParameter("categoryId")));
         try {
+            if (req.getParameter("date").isEmpty() || req.getParameter("amount").isEmpty() || req.getParameter("categoryId").isEmpty()) {
+                throw new IllegalArgumentException("Date, amount and category fields are mandatory!");
+            }
+            UUID expenseId = UUID.fromString(req.getParameter("id"));
+            Expense expense = new Expense(UUID.fromString(req.getParameter("id")),
+                    LocalDate.parse(req.getParameter("date")),
+                    Double.parseDouble(req.getParameter("amount")),
+                    req.getParameter("description"),
+                    UUID.fromString(req.getParameter("categoryId")));
+
             expensesStore.updateExpense(expenseId, expense);
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("action", Action.EDIT);
             req.setAttribute("error", "The expense could not be edited.");
             LOGGER.error("SQLException when the user wants to edit an expense");
+        } catch (IllegalArgumentException illegalArgumentException) {
+            illegalArgumentException.printStackTrace();
+            req.setAttribute("error", illegalArgumentException.getMessage());
+            LOGGER.error(illegalArgumentException.getMessage());
         }
     }
 
     public void addExpense(HttpServletRequest req, HttpServletResponse resp) {
-        Expense expense = new Expense(UUID.randomUUID(),
-                LocalDate.parse(req.getParameter("date")),
-                Double.parseDouble(req.getParameter("amount")),
-                req.getParameter("description"),
-                UUID.fromString(req.getParameter("categoryId")));
         try {
+            if (req.getParameter("date").isEmpty() || req.getParameter("amount").isEmpty() || req.getParameter("categoryId").isEmpty()) {
+                throw new IllegalArgumentException("Date, amount and category fields are mandatory!");
+            }
+            Expense expense = new Expense(UUID.randomUUID(),
+                    LocalDate.parse(req.getParameter("date")),
+                    Double.parseDouble(req.getParameter("amount")),
+                    req.getParameter("description"),
+                    UUID.fromString(req.getParameter("categoryId")));
             expensesStore.addExpense(expense);
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", "The expense could not be added.");
             LOGGER.error("SQLException when the user wants to add an expense");
-            LOGGER.info("SQLException when the user wants to add an expense??");
-            LOGGER.debug("SQLException when the user wants to add an expense!!");
+        } catch (IllegalArgumentException illegalArgumentException) {
+            illegalArgumentException.printStackTrace();
+            req.setAttribute("error", illegalArgumentException.getMessage());
+            LOGGER.error(illegalArgumentException.getMessage());
         }
     }
 
