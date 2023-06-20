@@ -61,6 +61,7 @@ public class ManageIncomeServlet extends HttpServlet {
             req.setAttribute("incomesList", calculator.addTotalLine(incomes));
             req.setAttribute("action_edit", Action.EDIT);
             req.setAttribute("action_delete", Action.DELETE);
+            req.setAttribute("chart_incomeList", calculator.getChartData(incomes));
             showIncomePage(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,6 +77,7 @@ public class ManageIncomeServlet extends HttpServlet {
             req.setAttribute("incomesList", calculator.addTotalLine(incomes));
             req.setAttribute("action_edit", Action.EDIT);
             req.setAttribute("action_delete", Action.DELETE);
+            req.setAttribute("chart_incomeList", calculator.getChartData(incomes));
             showIncomePage(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
