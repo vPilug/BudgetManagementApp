@@ -71,6 +71,7 @@ public class ManageExpenseServlet extends HttpServlet {
             req.setAttribute("categoriesList", categories);
             req.setAttribute("action_edit", Action.EDIT);
             req.setAttribute("action_delete", Action.DELETE);
+            req.setAttribute("chart_expensesList", calculator.getChartData(expenses));
             showExpensesPage(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,6 +89,7 @@ public class ManageExpenseServlet extends HttpServlet {
             req.setAttribute("categoriesList", categories);
             req.setAttribute("action_edit", Action.EDIT);
             req.setAttribute("action_delete", Action.DELETE);
+            req.setAttribute("chart_expensesList", calculator.getChartData(expenses));
             showExpensesPage(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();

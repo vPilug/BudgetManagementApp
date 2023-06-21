@@ -203,6 +203,40 @@
             </c:forEach>
             </tbody>
         </table>
+        <div style="width: 100%; padding: 30px 10px; display: flex; justify-content: center;">
+            <h2>Expense per Month Chart</h2>
+        </div>
+        <div style="display: flex; justify-content: center;">
+            <canvas style="height: 500px; width: 1000px; position: center" id="myChart"></canvas>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+
+        <script>
+            const dataFromDB = [
+                <c:forEach items="${requestScope.chart_expensesList}" var="expense">
+                {date: '<c:out value="${expense.month}"/>', amount: <c:out value="${expense.amount}"/>},
+                </c:forEach>
+            ]
+            const chart = document.getElementById('myChart');
+            const myChart = new Chart(chart, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Expenses per month',
+                        borderColor: '#486976',
+                        data: dataFromDB,
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    parsing: {
+                        xAxisKey: 'date',
+                        yAxisKey: 'amount'
+                    }
+                }
+            });
+        </script>
     </div>
     <%-- END CONTENT --%>
 
