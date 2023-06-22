@@ -177,12 +177,12 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Delete servlet</h1>
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Delete expense</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            Are you sure that you want to delete this servlet?
+                                            Are you sure that you want to delete this expense?
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
