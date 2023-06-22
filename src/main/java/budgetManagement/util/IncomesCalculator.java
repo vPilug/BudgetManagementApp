@@ -24,7 +24,6 @@ public class IncomesCalculator {
     }
 
     public List<MonthAmountIncome> getChartData(List<Income> incomeList) {
-        Month endDate = incomeList.get(0).getDate().getMonth();
         List<Month> monthsList = new ArrayList<>();
         monthsList.add(incomeList.get(incomeList.size() - 1).getDate().getMonth());
         for (Income income : incomeList) {

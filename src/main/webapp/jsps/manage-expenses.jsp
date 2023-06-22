@@ -207,24 +207,29 @@
             <h2>Expense per Month Chart</h2>
         </div>
         <div style="display: flex; justify-content: center;">
-            <canvas style="height: 500px; width: 1000px; position: center" id="myChart"></canvas>
+            <canvas style="height: 500px; width: 1000px; position: center" id="myLineChart"></canvas>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
 
         <script>
             const dataFromDB = [
-                <c:forEach items="${requestScope.chart_expensesList}" var="expense">
-                {date: '<c:out value="${expense.month}"/>', amount: <c:out value="${expense.amount}"/>},
+                <c:forEach items="${requestScope.chart_expensesList}" var="expense_per_month">
+                {
+                    date: '<c:out value="${expense_per_month.month}"/>',
+                    amount: <c:out value="${expense_per_month.amount}"/>
+                },
                 </c:forEach>
             ]
-            const chart = document.getElementById('myChart');
-            const myChart = new Chart(chart, {
+            const lineChart = document.getElementById('myLineChart');
+            const myLineChart = new Chart(lineChart, {
                 type: 'line',
                 data: {
                     datasets: [{
                         label: 'Expenses per month',
                         borderColor: '#486976',
+                        pointRadius: 10,
+                        pointStyle: 'rectRounded',
                         data: dataFromDB,
                     }]
                 },
@@ -232,6 +237,42 @@
                     responsive: false,
                     parsing: {
                         xAxisKey: 'date',
+                        yAxisKey: 'amount'
+                    }
+                }
+            });
+        </script>
+        <div style="width: 100%; padding: 30px 10px; display: flex; justify-content: center;">
+            <h2>Expense per Category Chart</h2>
+        </div>
+
+        <div style="display: flex; justify-content: center;">
+            <canvas style="height: 500px; width: 1000px; position: center" id="myBarChart"></canvas>
+        </div>
+
+        <script>
+            const dataFromDB2 = [
+                <c:forEach items="${requestScope.chart_expensesList2}" var="expenses_per_category">
+                {
+                    category: '<c:out value="${expenses_per_category.categoryName}"/>',
+                    amount: <c:out value="${expenses_per_category.amount}"/>
+                },
+                </c:forEach>
+            ]
+            const barChart = document.getElementById('myBarChart');
+            const myBarChart = new Chart(barChart, {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        label: 'Expenses per category',
+                        backgroundColor: '#486976',
+                        data: dataFromDB2,
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    parsing: {
+                        xAxisKey: 'category',
                         yAxisKey: 'amount'
                     }
                 }

@@ -1,13 +1,12 @@
 package budgetManagement.util;
 
+import budgetManagement.model.Category;
 import budgetManagement.model.Expense;
+import budgetManagement.model.chart.CategoryAmountExpense;
 import budgetManagement.model.chart.MonthAmountExpense;
 
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class ExpensesCalculator {
 
@@ -48,6 +47,38 @@ public class ExpensesCalculator {
             Collections.sort(monthAmountExpensesList, Comparator.comparing(MonthAmountExpense::getMonth));
         }
         return monthAmountExpensesList;
+    }
+
+    public List<CategoryAmountExpense> getChartData2(List<Expense> expensesList, List<Category> categoriesList) {
+        List<String> categoriesNamesList = new ArrayList<>();
+        Map<UUID, String> categoriesMap = new HashMap<>();
+        for (Category category : categoriesList) {
+            categoriesMap.put(category.getId(), category.getName());
+        }
+
+        for (Expense expense : expensesList) {
+            UUID categoryId = expense.getCategoryId();
+            String categoryName = categoriesMap.get(categoryId);
+            if (!categoriesNamesList.contains(categoryName)) {
+                categoriesNamesList.add(categoryName);
+            }
+        }
+
+        List<CategoryAmountExpense> categoryAmountExpensesList = new ArrayList<>();
+        for (String name : categoriesNamesList) {
+            CategoryAmountExpense categoryAmountExpense = new CategoryAmountExpense(name);
+            Double amount = 0.0;
+            for (Expense expense : expensesList) {
+                UUID categoryId = expense.getCategoryId();
+                String categoryName = categoriesMap.get(categoryId);
+                if (name.equals(categoryName)) {
+                    amount = amount + expense.getAmount();
+                }
+            }
+            categoryAmountExpense.setAmount(amount);
+            categoryAmountExpensesList.add(categoryAmountExpense);
+        }
+        return categoryAmountExpensesList;
     }
 }
 

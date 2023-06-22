@@ -186,24 +186,29 @@
             <h2>Income per Month Chart</h2>
         </div>
         <div style="display: flex; justify-content: center;">
-            <canvas style="height: 500px; width: 1000px; position: center" id="myChart"></canvas>
+            <canvas style="height: 500px; width: 1000px; position: center" id="myLineChart"></canvas>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
 
         <script>
             const dataFromDB = [
-                <c:forEach items="${requestScope.chart_incomeList}" var="income">
-                {date: '<c:out value="${income.month}"/>', amount: <c:out value="${income.amount}"/>},
+                <c:forEach items="${requestScope.chart_incomeList}" var="incomes_per_month">
+                {
+                    date: '<c:out value="${incomes_per_month.month}"/>',
+                    amount: <c:out value="${incomes_per_month.amount}"/>
+                },
                 </c:forEach>
             ]
-            const chart = document.getElementById('myChart');
-            const myChart = new Chart(chart, {
+            const lineChart = document.getElementById('myLineChart');
+            const myLineChart = new Chart(lineChart, {
                 type: 'line',
                 data: {
                     datasets: [{
                         label: 'Incomes per month',
                         borderColor: '#486976',
+                        pointRadius: 10,
+                        pointStyle: 'rectRounded',
                         data: dataFromDB,
                     }]
                 },
