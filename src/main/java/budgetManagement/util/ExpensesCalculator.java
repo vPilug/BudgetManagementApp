@@ -64,7 +64,6 @@ public class ExpensesCalculator {
                 categoriesNamesList.add(categoryName);
             }
         }
-
         List<CategoryAmountExpense> categoryAmountExpensesList = new ArrayList<>();
         for (String name : categoriesNamesList) {
             CategoryAmountExpense categoryAmountExpense = new CategoryAmountExpense(name);
