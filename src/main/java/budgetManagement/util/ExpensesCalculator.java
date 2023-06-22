@@ -24,26 +24,27 @@ public class ExpensesCalculator {
     }
 
     public List<MonthAmountExpense> getChartData(List<Expense> expensesList) {
-        Month endDate = expensesList.get(0).getDate().getMonth();
-        List<Month> monthsList = new ArrayList<>();
-        monthsList.add(expensesList.get(expensesList.size() - 1).getDate().getMonth());
-        for (Expense expense : expensesList) {
-            Month currentMonth = expense.getDate().getMonth();
-            if (!monthsList.contains(currentMonth)) {
-                monthsList.add(currentMonth);
-            }
-        }
         List<MonthAmountExpense> monthAmountExpensesList = new ArrayList<>();
-        for (Month month : monthsList) {
-            MonthAmountExpense monthAmountExpense = new MonthAmountExpense(month);
+        List<Month> monthsList = new ArrayList<>();
+        if (!expensesList.isEmpty()) {
+            monthsList.add(expensesList.get(expensesList.size() - 1).getDate().getMonth());
             for (Expense expense : expensesList) {
-                if (month.equals(expense.getDate().getMonth())) {
-                    Double currentAmount = monthAmountExpense.getAmount();
-                    Double expenseAmount = expense.getAmount();
-                    monthAmountExpense.setAmount(currentAmount + expenseAmount);
+                Month currentMonth = expense.getDate().getMonth();
+                if (!monthsList.contains(currentMonth)) {
+                    monthsList.add(currentMonth);
                 }
             }
-            monthAmountExpensesList.add(monthAmountExpense);
+            for (Month month : monthsList) {
+                MonthAmountExpense monthAmountExpense = new MonthAmountExpense(month);
+                for (Expense expense : expensesList) {
+                    if (month.equals(expense.getDate().getMonth())) {
+                        Double currentAmount = monthAmountExpense.getAmount();
+                        Double expenseAmount = expense.getAmount();
+                        monthAmountExpense.setAmount(currentAmount + expenseAmount);
+                    }
+                }
+                monthAmountExpensesList.add(monthAmountExpense);
+            }
             Collections.sort(monthAmountExpensesList, Comparator.comparing(MonthAmountExpense::getMonth));
         }
         return monthAmountExpensesList;

@@ -24,27 +24,33 @@ public class IncomesCalculator {
     }
 
     public List<MonthAmountIncome> getChartData(List<Income> incomeList) {
-        List<Month> monthsList = new ArrayList<>();
-        monthsList.add(incomeList.get(incomeList.size() - 1).getDate().getMonth());
-        for (Income income : incomeList) {
-            Month currentMonth = income.getDate().getMonth();
-            if (!monthsList.contains(currentMonth)) {
-                monthsList.add(currentMonth);
-            }
-        }
         List<MonthAmountIncome> monthAmountIncomesList = new ArrayList<>();
-        for (Month month : monthsList) {
-            MonthAmountIncome monthAmountIncome = new MonthAmountIncome(month);
+
+        if (!incomeList.isEmpty()) {
+            List<Month> monthsList = new ArrayList<>();
+            monthsList.add(incomeList.get(incomeList.size() - 1).getDate().getMonth());
+
             for (Income income : incomeList) {
-                if (month.equals(income.getDate().getMonth())) {
-                    Double currentAmount = monthAmountIncome.getAmount();
-                    Double incomeAmount = income.getAmount();
-                    monthAmountIncome.setAmount(currentAmount + incomeAmount);
+                Month currentMonth = income.getDate().getMonth();
+                if (!monthsList.contains(currentMonth)) {
+                    monthsList.add(currentMonth);
                 }
             }
-            monthAmountIncomesList.add(monthAmountIncome);
+
+            for (Month month : monthsList) {
+                MonthAmountIncome monthAmountIncome = new MonthAmountIncome(month);
+                for (Income income : incomeList) {
+                    if (month.equals(income.getDate().getMonth())) {
+                        Double currentAmount = monthAmountIncome.getAmount();
+                        Double incomeAmount = income.getAmount();
+                        monthAmountIncome.setAmount(currentAmount + incomeAmount);
+                    }
+                }
+                monthAmountIncomesList.add(monthAmountIncome);
+            }
             Collections.sort(monthAmountIncomesList, Comparator.comparing(MonthAmountIncome::getMonth));
         }
         return monthAmountIncomesList;
     }
+
 }
