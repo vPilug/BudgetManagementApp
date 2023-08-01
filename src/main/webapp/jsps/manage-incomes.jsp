@@ -105,8 +105,8 @@
                 </button>
             </div>
             <div class="mb-3" style="display: flex">
-                <input type="date" id="date1" class="form-control" name="date1">
-                <input type="date" id="date2" class="form-control" name="date2">
+                <input type="date" id="date1" class="form-control" name="date1" value="<c:out value ="${date1}"/>">
+                <input type="date" id="date2" class="form-control" name="date2" value="<c:out value ="${date2}"/>">
                 <button type="submit" class="btn btn-primary"
                         style="width: 400px; height: 50px; background-color: #486976; border: none">
                     Search

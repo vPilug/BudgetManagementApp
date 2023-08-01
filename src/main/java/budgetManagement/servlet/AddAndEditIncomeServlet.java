@@ -41,18 +41,28 @@ public class AddAndEditIncomeServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        Action action = ServletUtils.getActionFromRequest(req, resp);
-        switch (action) {
-            case ADD:
-                addIncome(req, resp);
-                redirectToIncomesPage(req, resp);
-                break;
-            case EDIT:
-                editIncome(req, resp);
-                redirectToIncomesPage(req, resp);
-                break;
-            default:
-                redirectToIncomesPage(req, resp);
+        try {
+            Action action = ServletUtils.getActionFromRequest(req, resp);
+            switch (action) {
+                case ADD:
+                    if (addIncome(req, resp)) {
+                        redirectToIncomesPage(req, resp);
+                    } else {
+                        req.setAttribute("action", Action.ADD);
+                        req.getRequestDispatcher("jsps/add-edit-income.jsp").forward(req, resp);
+                    }
+                    break;
+                case EDIT:
+                    editIncome(req, resp);
+                    redirectToIncomesPage(req, resp);
+                    break;
+                default:
+                    redirectToIncomesPage(req, resp);
+            }
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+            req.setAttribute("error", "An unexpected error. Please try again later!");
+            LOGGER.error("ServletException | IOException in doPost");
         }
     }
 
@@ -80,25 +90,23 @@ public class AddAndEditIncomeServlet extends HttpServlet {
         }
     }
 
-    private void addIncome(HttpServletRequest req, HttpServletResponse resp) {
+    private boolean addIncome(HttpServletRequest req, HttpServletResponse resp) {
         try {
             if (req.getParameter("date").isEmpty() || req.getParameter("amount").isEmpty()) {
-                throw new IllegalArgumentException("Date and amount fields are mandatory!");
+                req.setAttribute("error", "Date and amount fields are mandatory!");
+                return false;
             }
             Income income = new Income(UUID.randomUUID(),
                     LocalDate.parse(req.getParameter("date")),
                     Double.parseDouble(req.getParameter("amount")),
                     req.getParameter("source"));
-
             incomesStore.addIncome(income);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", "The income could not be added.");
             LOGGER.error("SQLException when the user wants to add an income");
-        } catch (IllegalArgumentException illegalArgumentException) {
-            illegalArgumentException.printStackTrace();
-            req.setAttribute("error", illegalArgumentException.getMessage());
-            LOGGER.error(illegalArgumentException.getMessage());
+            return false;
         }
     }
 

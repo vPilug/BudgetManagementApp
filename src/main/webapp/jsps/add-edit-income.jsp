@@ -75,14 +75,13 @@
     </div>
 </div>
 <%-- END HEADER --%>
-<div style="width: 65%; margin: 0 auto; padding: 50px 0;"> <%-- START CONTENT --%>
-    <c:choose>
-        <c:when test="${requestScope.error != null}">
+<div style="width: 65%; margin: 0 auto; padding: 50px 0; "> <%-- START CONTENT --%>
+        <c:if test="${requestScope.error != null}">
             <div class="alert alert-danger" role="alert">
                 <c:out value="${requestScope.error}"/>
             </div>
-        </c:when>
-        <c:otherwise>
+        </c:if>
+
             <form method="post" action="<c:out value="${context}"/>/add-income">
                 <input type="hidden" name="action" value="<c:out value="${requestScope.action}"/>">
                 <input type="hidden" name="id" value="<c:out value="${requestScope.income.id}"/>">
@@ -114,8 +113,7 @@
                     Submit
                 </button>
             </form>
-        </c:otherwise>
-    </c:choose>
+
 </div>
 <%-- END CONTENT --%>
 

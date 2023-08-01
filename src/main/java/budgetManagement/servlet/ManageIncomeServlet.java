@@ -62,6 +62,8 @@ public class ManageIncomeServlet extends HttpServlet {
             req.setAttribute("action_edit", Action.EDIT);
             req.setAttribute("action_delete", Action.DELETE);
             req.setAttribute("chart_incomeList", calculator.getChartData(incomes));
+            req.setAttribute("date1", req.getParameter("date1"));
+            req.setAttribute("date2", req.getParameter("date2"));
             showIncomePage(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();

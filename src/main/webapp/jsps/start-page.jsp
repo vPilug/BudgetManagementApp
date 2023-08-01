@@ -81,7 +81,7 @@
     </div>
     <div style="font-family: 'Open Sans'; font-size: 20px; padding: 205px 650px 0 60px;">
         <p>
-            Budget Manager App is an application that helps you manage your personal budget and track your income and
+            Budget Management App is an application that helps you manage your personal budget and track your income and
             expenses in a simple and efficient way. With its help, you can add incomes and expenses to later filter them
             based on desired time period or category. Additionally, you will find functions to delete or edit them.
         </p>

@@ -110,12 +110,12 @@
                 </button>
             </div>
             <div class="mb-3" style="display: flex">
-                <input type="date" id="date1" class="form-control" name="date1">
-                <input type="date" id="date2" class="form-control" name="date2">
-                <select id="categoryId" class="form-select" name="categoryId">
+                <input type="date" id="date1" class="form-control" name="date1" value="<c:out value ="${date1}"/>">
+                <input type="date" id="date2" class="form-control" name="date2" value="<c:out value ="${date2}"/>">
+                <select id="categoryId" class="form-select" name="categoryId" >
                     <option value="All categories">All categories</option>
                     <c:forEach var="category" items="${requestScope.categoriesList}">
-                        <option value="${category.id}">${category.name}</option>
+                    <option <c:if test="${categoryId == category.id}"> selected </c:if> value="${category.id}">${category.name}</option>
                     </c:forEach>
                 </select>
                 <button type="submit" class="btn btn-primary"

@@ -50,14 +50,13 @@ public class CategoryServletTest {
     }
 
     @Test
-    public void testDoPost() throws ServletException, IOException, SQLException {
+    public void testDoPost() throws IOException, SQLException {
         when(request.getParameter("name")).thenReturn("New Category");
         doNothing().when(categoriesStore).addCategory(any(Category.class));
-        doNothing().when(response).sendRedirect("add-expense");
 
         servlet.doPost(request, response);
 
-        verify(request).getParameter("name");
+        verify(request, times(2)).getParameter("name");
         verify(categoriesStore).addCategory(any(Category.class));
         verify(response).sendRedirect("add-expense");
     }
@@ -74,7 +73,7 @@ public class CategoryServletTest {
 
         servlet.addCategory(request, response);
 
-        verify(request).getParameter("name");
+        verify(request, times(2)).getParameter("name");
         verify(categoriesStore).addCategory(any(Category.class));
     }
 }

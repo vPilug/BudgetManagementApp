@@ -76,22 +76,21 @@
 </div>
 <%-- END HEADER --%>
 <div style="width: 65%; margin: 0 auto; padding: 50px 0; display: flex; flex-direction: column; align-items: flex-end;"> <%-- START CONTENT --%>
-    <c:choose>
-        <c:when test="${requestScope.error != null}">
+        <c:if test="${requestScope.error != null}">
             <div class="alert alert-danger" role="alert">
                 <c:out value="${requestScope.error}"/>
             </div>
-        </c:when>
-        <c:otherwise>
+        </c:if>
+
             <form method="post" action="<c:out value="${context}"/>/add-expense" style="width: 100%">
                 <input type="hidden" name="action" value="<c:out value="${requestScope.action}"/>">
                 <input type="hidden" name="id" value="<c:out value="${requestScope.expense.id}"/>">
                 <c:choose>
                     <c:when test="${requestScope.action == \"ADD\"}">
-                        <legend>Add servlet</legend>
+                        <legend>Add expense</legend>
                     </c:when>
                     <c:otherwise>
-                        <legend>Edit servlet</legend>
+                        <legend>Edit expense</legend>
                     </c:otherwise>
                 </c:choose>
                 <div class="mb-3">
@@ -129,8 +128,6 @@
                     category
                 </button>
             </a>
-        </c:otherwise>
-    </c:choose>
 </div>
 <%-- END CONTENT --%>
 

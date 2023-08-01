@@ -73,6 +73,9 @@ public class ManageExpenseServlet extends HttpServlet {
             req.setAttribute("action_delete", Action.DELETE);
             req.setAttribute("chart_expensesList", calculator.getChartData(expenses));
             req.setAttribute("chart_expensesList2", calculator.getChartData2(expenses, categories));
+            req.setAttribute("date1", req.getParameter("date1"));
+            req.setAttribute("date2", req.getParameter("date2"));
+            req.setAttribute("categoryId", req.getParameter("categoryId"));
             showExpensesPage(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
